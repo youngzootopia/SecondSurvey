@@ -10,19 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027014305) do
+ActiveRecord::Schema.define(version: 20161027063918) do
 
   create_table "users", primary_key: "sUserID", id: :string, limit: 20, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "name",        limit: 20
+    t.string   "name",            limit: 20
     t.date     "birthday"
-    t.string   "sex",         limit: 2
-    t.string   "married",     limit: 2
-    t.string   "children",    limit: 2
-    t.string   "job",         limit: 100
-    t.string   "hobby",       limit: 100
+    t.string   "sex",             limit: 2
+    t.string   "married",         limit: 2
+    t.string   "children",        limit: 2
+    t.string   "job",             limit: 100
+    t.string   "hobby",           limit: 100
     t.integer  "currentShot"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "password_digest"
   end
 
 end
