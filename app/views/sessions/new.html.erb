@@ -1,19 +1,19 @@
 <% provide(:title, "Log in") %>
-<h1>Log in</h1>
+<h2>로그인 해주세요.</h2>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= form_for(:session, url: login_path) do |f| %>
 
-      <%= f.label :id %>
+      <%= f.label :아이디 %>
       <%= f.text_field :sUserID, class: 'form-control' %>
 
-      <%= f.label :password %>
+      <%= f.label :비밀번호 %>
       <%= f.password_field :password, class: 'form-control' %>
 
-      <%= f.submit "Log in", class: "btn btn-primary" %>
+      <%= f.submit "로그인", class: "btn btn-primary" %>
     <% end %>
 
-    <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+    <p>처음 오셨나요? <%= link_to "클릭 해주세요.", signup_path %></p>
   </div>
 </div>
