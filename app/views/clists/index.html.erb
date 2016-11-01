@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Clists</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Cid</th>
+      <th>Category</th>
+      <th>Programname</th>
+      <th>Episodenum</th>
+      <th>Videourl</th>
+      <th>Videofilename</th>
+      <th>Videothumb</th>
+      <th>Fps</th>
+      <th>Registerdatetime</th>
+      <th>Lastsaveddatetime</th>
+      <th>Tagstatus</th>
+      <th>User</th>
+      <th>Programnamekor</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @clists.each do |clist| %>
+      <tr>
+        <td><%= clist.CID %></td>
+        <td><%= clist.Category %></td>
+        <td><%= clist.ProgramName %></td>
+        <td><%= clist.EpisodeNum %></td>
+        <td><%= clist.VideoURL %></td>
+        <td><%= clist.VideoFileName %></td>
+        <td><%= clist.VideoThumb %></td>
+        <td><%= clist.FPS %></td>
+        <td><%= clist.RegisterDateTime %></td>
+        <td><%= clist.LastSavedDateTime %></td>
+        <td><%= clist.TagStatus %></td>
+        <td><%= clist.User %></td>
+        <td><%= clist.ProgramNameKor %></td>
+        <td><%= link_to 'Show', clist %></td>
+        <td><%= link_to 'Edit', edit_clist_path(clist) %></td>
+        <td><%= link_to 'Destroy', clist, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Clist', new_clist_path %>

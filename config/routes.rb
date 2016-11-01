@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :clists
   get '/test',		to: 'response#test'
 
   #...
