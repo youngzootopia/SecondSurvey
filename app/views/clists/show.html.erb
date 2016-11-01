@@ -1,0 +1,69 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Cid:</strong>
+  <%= @clist.CID %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @clist.Category %>
+</p>
+
+<p>
+  <strong>Programname:</strong>
+  <%= @clist.ProgramName %>
+</p>
+
+<p>
+  <strong>Episodenum:</strong>
+  <%= @clist.EpisodeNum %>
+</p>
+
+<p>
+  <strong>Videourl:</strong>
+  <%= @clist.VideoURL %>
+</p>
+
+<p>
+  <strong>Videofilename:</strong>
+  <%= @clist.VideoFileName %>
+</p>
+
+<p>
+  <strong>Videothumb:</strong>
+  <%= @clist.VideoThumb %>
+</p>
+
+<p>
+  <strong>Fps:</strong>
+  <%= @clist.FPS %>
+</p>
+
+<p>
+  <strong>Registerdatetime:</strong>
+  <%= @clist.RegisterDateTime %>
+</p>
+
+<p>
+  <strong>Lastsaveddatetime:</strong>
+  <%= @clist.LastSavedDateTime %>
+</p>
+
+<p>
+  <strong>Tagstatus:</strong>
+  <%= @clist.TagStatus %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @clist.User %>
+</p>
+
+<p>
+  <strong>Programnamekor:</strong>
+  <%= @clist.ProgramNameKor %>
+</p>
+
+<%= link_to 'Edit', edit_clist_path(@clist) %> |
+<%= link_to 'Back', clists_path %>

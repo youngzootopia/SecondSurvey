@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
+<<<<<<< HEAD
   get '/test',		 to: 'response#test'
   
   get '/contact',	 to: 'home#contact'
+=======
+  resources :clists
+  get '/test',		to: 'response#test'
+>>>>>>> test
 
   #...
   # You can have the root of your site routed with "root"

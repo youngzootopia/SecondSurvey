@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161027063918) do
+ActiveRecord::Schema.define(version: 20161101083234) do
+
+  create_table "clists", primary_key: "CID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "Category"
+    t.string   "ProgramName"
+    t.integer  "EpisodeNum"
+    t.string   "VideoURL"
+    t.string   "VideoFileName"
+    t.string   "VideoThumb"
+    t.float    "FPS",               limit: 24
+    t.datetime "RegisterDateTime"
+    t.datetime "LastSavedDateTime"
+    t.integer  "TagStatus"
+    t.string   "User"
+    t.string   "ProgramNameKor"
+  end
 
   create_table "users", primary_key: "sUserID", id: :string, limit: 20, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",            limit: 20
