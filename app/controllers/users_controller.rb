@@ -41,6 +41,22 @@ class UsersController < ApplicationController
     end
   end
   
+  # 비밀번호 변경 시 GET
+  def password_edit
+    @user = User.new
+  end
+    
+  # 비밀번호 변경 시 POST
+  def password_update
+    @user = User.find(session[:user_id])
+
+    if @user.update(password_params)
+      render 'show'
+    else
+      render 'password_edit'
+    end
+  end
+  
   private
     # 회원가입 시 form 파라미터들
     def user_params
@@ -50,5 +66,10 @@ class UsersController < ApplicationController
     # 회원정보 변경 시 form 파라미터들
     def update_params
       params.require(:user).permit(:name, :birthday, :sex, :married, :children, :job, :hobby)
+    end
+    
+    # 비밀번호 변경 시 form 파라미터들
+    def password_params
+        params.require(:user).permit(:password, :password_confirmation)
     end
 end

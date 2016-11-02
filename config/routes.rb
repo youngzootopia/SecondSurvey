@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   post	 '/signup',	 to: 'users#create'
   get	 '/users/edit',	 to: 'users#edit'
   post	 '/users/edit',	 to: 'users#update'
+  get	 '/users/password',	 to: 'users#password_edit'
+  post	 '/users/password',	 to: 'users#password_update'
   get	 'sessions/new'
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
