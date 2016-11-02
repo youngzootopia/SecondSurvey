@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-  get '/test',		 to: 'response#test'
-  get '/contact',	 to: 'home#contact'
-  
   resources :clists
+  
+  get '/test',		 to: 'response#test'
+  
+  # contact static page
+  get '/contact',	 to: 'home#contact'
 
   #...
   # You can have the root of your site routed with "root"
