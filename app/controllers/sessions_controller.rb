@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     
     if user && user.authenticate(params[:session][:password])
       log_in user
-      redirect_to user
+      redirect_to action: 'create', :controller=>"clists"
     else
       flash[:danger] = 'Invalid id/password combination' # Not quite right!
       render 'new'

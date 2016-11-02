@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   resources :clists
-  resources :users
   
   get '/test',		 to: 'response#test'
   
@@ -18,6 +17,8 @@ Rails.application.routes.draw do
   # sign up, login, logout... etc
   get	 '/signup',	 to: 'users#new'
   post	 '/signup',	 to: 'users#create'
+  get	 '/users/edit',	 to: 'users#edit'
+  post	 '/users/edit',	 to: 'users#update'
   get	 'sessions/new'
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'
