@@ -1,42 +1,42 @@
 <% provide(:title, 'Sign up') %>
-<h1>Sign up</h1>
+<h1>회원 가입</h1>
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= form_for(@user, url: signup_path) do |f| %>
       <%= render 'shared/error_messages' %>
       
-      <%= f.label :sUserID %>
+      <%= f.label :아이디 %>
       <%= f.text_field :sUserID, class: 'form-control' %>
       
-      <%= f.label :password %>
+      <%= f.label :비밀번호 %>
       <%= f.password_field :password, class: 'form-control' %>
 
-      <%= f.label :password_confirmation, "Confirmation" %>
+      <%= f.label :password_confirmation, "비밀번호 확인" %>
       <%= f.password_field :password_confirmation, class: 'form-control' %>
 
-      <%= f.label :name %>
+      <%= f.label :이름 %>
       <%= f.text_field :name, class: 'form-control' %>
       
-      <%= f.label :birthday %>
-      <%= f.text_field :birthday %>
+      <%= f.label :생년월일 %>
+      <%= f.text_field :birthday, class: 'form-control'  %>
       
-      <%= f.label :sex %>
-      <%= f.text_field :sex %>
+      <%= f.label :성별 %>
+      <%= f.text_field :sex, class: 'form-control'  %>
       
-      <%= f.label :married %>
-      <%= f.text_field :married %>
+      <%= f.label :"결혼 여부" %>
+      <%= f.text_field :married, class: 'form-control'  %>
       
-      <%= f.label :children %>
-      <%= f.text_field :children %>
+      <%= f.label :"자식 유무" %>
+      <%= f.text_field :children, class: 'form-control'  %>
       
-      <%= f.label :job %>
-      <%= f.text_field :job %>
+      <%= f.label :직업 %>
+      <%= f.text_field :job, class: 'form-control'  %>
       
-      <%= f.label :hobby %>
-      <%= f.text_field :hobby %>
+      <%= f.label :취미 %>
+      <%= f.text_field :hobby, class: 'form-control'  %>
       
-      <%= f.submit "Create my account", class: "btn btn-primary" %>
+      <%= f.submit "완료", class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>
