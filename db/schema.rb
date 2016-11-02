@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161101083234) do
+ActiveRecord::Schema.define(version: 20161102022803) do
 
   create_table "clists", primary_key: "CID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Category"
@@ -29,6 +29,9 @@ ActiveRecord::Schema.define(version: 20161101083234) do
 
   create_table "users", primary_key: "sUserID", id: :string, limit: 20, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",            limit: 20
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "password_digest"
     t.date     "birthday"
     t.string   "sex",             limit: 2
     t.string   "married",         limit: 2
@@ -36,9 +39,6 @@ ActiveRecord::Schema.define(version: 20161101083234) do
     t.string   "job",             limit: 100
     t.string   "hobby",           limit: 100
     t.integer  "currentShot"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.string   "password_digest"
   end
 
 end

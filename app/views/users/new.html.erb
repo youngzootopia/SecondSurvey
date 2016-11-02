@@ -19,16 +19,19 @@
       <%= f.text_field :name, class: 'form-control' %>
       
       <%= f.label :생년월일 %>
-      <%= f.text_field :birthday, class: 'form-control'  %>
+      <%= f.date_field :birthday, class: 'form-control'  %>
       
-      <%= f.label :성별 %>
-      <%= f.text_field :sex, class: 'form-control'  %>
+      <%= f.label :성별 %><br>
+      <%= f.label :"남자" %><%= f.radio_button :sex, 'M', class: 'form-control'  %>
+      <%= f.label :"여자" %><%= f.radio_button :sex, 'F', class: 'form-control'  %>
       
-      <%= f.label :"결혼 여부" %>
-      <%= f.text_field :married, class: 'form-control'  %>
+      <%= f.label :"결혼 여부" %><br>
+      <%= f.label :"기혼" %><%= f.radio_button :married, 'T', class: 'form-control'  %>
+      <%= f.label :"미혼" %><%= f.radio_button :married, 'F', class: 'form-control'  %>
       
-      <%= f.label :"자식 유무" %>
-      <%= f.text_field :children, class: 'form-control'  %>
+      <%= f.label :"자식 유무" %><br>
+      <%= f.label :"자녀 있음" %><%= f.radio_button :children, 'T', class: 'form-control'  %>
+      <%= f.label :"자녀 없음" %><%= f.radio_button :children, 'F', class: 'form-control'  %>
       
       <%= f.label :직업 %>
       <%= f.text_field :job, class: 'form-control'  %>
@@ -36,6 +39,7 @@
       <%= f.label :취미 %>
       <%= f.text_field :hobby, class: 'form-control'  %>
       
+      <br>
       <%= f.submit "완료", class: "btn btn-primary" %>
     <% end %>
   </div>

@@ -10,4 +10,11 @@ class User < ApplicationRecord
 	                                                  BCrypt::Engine.cost
 	BCrypt::Password.create(string, cost: cost)
   end
+  
+  validates :birthday, presence: true
+  validates :sex, presence: true
+  validates :married, presence: true
+  validates :children, presence: true
+  validates :job, presence: true
+  validates :hobby, presence: true
 end
