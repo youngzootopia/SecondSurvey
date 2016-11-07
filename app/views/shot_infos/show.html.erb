@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Shotid:</strong>
+  <%= @shot_info.ShotID %>
+</p>
+
+<p>
+  <strong>Shotnum:</strong>
+  <%= @shot_info.ShotNum %>
+</p>
+
+<p>
+  <strong>Startframe:</strong>
+  <%= @shot_info.StartFrame %>
+</p>
+
+<p>
+  <strong>Endframe:</strong>
+  <%= @shot_info.EndFrame %>
+</p>
+
+<p>
+  <strong>Thumburl:</strong>
+  <%= @shot_info.ThumbURL %>
+</p>
+
+<p>
+  <strong>Cid:</strong>
+  <%= @shot_info.CID %>
+</p>
+
+<%= link_to 'Edit', edit_shot_info_path(@shot_info) %> |
+<%= link_to 'Back', shot_infos_path %>

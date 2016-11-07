@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161102022803) do
+ActiveRecord::Schema.define(version: 20161107045650) do
 
   create_table "clists", primary_key: "CID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Category"
@@ -27,6 +27,15 @@ ActiveRecord::Schema.define(version: 20161102022803) do
     t.string   "ProgramNameKor"
   end
 
+  create_table "shot_infos", primary_key: "ShotID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "ShotNum"
+    t.integer "StartFrame"
+    t.integer "EndFrame"
+    t.string  "ThumbURL"
+    t.integer "CID"
+    t.index ["CID"], name: "fk_CID_from_clist", using: :btree
+  end
+
   create_table "users", primary_key: "sUserID", id: :string, limit: 20, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name",            limit: 20
     t.datetime "created_at",                  null: false
@@ -39,6 +48,8 @@ ActiveRecord::Schema.define(version: 20161102022803) do
     t.string   "job",             limit: 100
     t.string   "hobby",           limit: 100
     t.integer  "currentShot"
+    t.integer  "group"
   end
 
+  add_foreign_key "shot_infos", "clists", column: "CID", primary_key: "CID", name: "fk_CID_from_clist", on_delete: :cascade
 end

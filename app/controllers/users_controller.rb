@@ -16,6 +16,9 @@ class UsersController < ApplicationController
     # 처음 가입하는 유저는 currentShot이 0으로 초기화
     @user.currentShot = 0
     
+    # group 구분 해야 함. 확실하지 않기 때문에 일단 1로 할당.
+    @user.group = 1
+    
     if @user.save
       log_in @user
       flash[:success] = "Welcome to the Sample App!"
