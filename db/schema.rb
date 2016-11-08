@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107045650) do
+ActiveRecord::Schema.define(version: 20161107081533) do
 
   create_table "clists", primary_key: "CID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Category"
@@ -25,6 +25,12 @@ ActiveRecord::Schema.define(version: 20161107045650) do
     t.integer  "TagStatus"
     t.string   "User"
     t.string   "ProgramNameKor"
+  end
+
+  create_table "filterings", primary_key: "sUserID", id: :string, default: "", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "serviceProvider"
+    t.string "degree"
+    t.string "price"
   end
 
   create_table "shot_infos", primary_key: "ShotID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -51,5 +57,6 @@ ActiveRecord::Schema.define(version: 20161107045650) do
     t.integer  "group"
   end
 
+  add_foreign_key "filterings", "users", column: "sUserID", primary_key: "sUserID", name: "fk_sUserID_from_users", on_delete: :cascade
   add_foreign_key "shot_infos", "clists", column: "CID", primary_key: "CID", name: "fk_CID_from_clist", on_delete: :cascade
 end

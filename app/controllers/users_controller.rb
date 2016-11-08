@@ -73,6 +73,6 @@ class UsersController < ApplicationController
     
     # 비밀번호 변경 시 form 파라미터들
     def password_params
-        params.require(:user).permit(:password, :password_confirmation)
+      params.require(:user).permit(:password, :password_confirmation)
     end
 end

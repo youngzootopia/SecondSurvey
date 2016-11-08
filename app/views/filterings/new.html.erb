@@ -1,0 +1,28 @@
+<% provide(:title, 'Filtering') %>
+<h1>설문 전 정보 수집</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@filtering, :url => 'filtering') do |f| %>
+      
+      <%= f.label :"좋아하는 사이트" %><br>
+      <%= f.select :serviceProvider, 
+      		[['Youtube', 'Youtube'], ['Facebook', 'Facebook'],
+      		 ['Instagram', 'Instagram'], ['Naver TV캐스트', 'Naver TV캐스트'],
+      		 ['Daum TV팟', 'Daum TV팟'], ['afreeca TV', 'afreeca TV']] %><br>
+      
+      <%= f.label :"시청 등급" %><br>
+      <%= f.select :degree, 
+      		[['청소년관람불가', '청소년관람불가'], ['15세 이상 관람가', '15세 이상 관람가'],
+      		 ['12세 이상 관람가', '12세 이상 관람가'], ['전체관람가', '전체관람가']] %><br>
+      
+      <%= f.label :"시청 가격" %><br>
+      <%= f.select :price, 
+      		[['무료', '무료'], ['1,000 원 이하', '1,000 원 이하'],
+      		 ['5,000원 이하', '5,000원 이하'], ['10,000 원 이하', '10,000 원 이하']] %><br>
+      
+      <br>
+      <%= f.submit "완료", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

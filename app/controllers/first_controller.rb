@@ -1,6 +1,11 @@
 class FirstController < ApplicationController
   # 설문 페이지
   def get_page
+    @user = User.find(session[:user_id])
+    unless Filtering.exists? @user.sUserID
+      @filtering = Filtering.new
+      render :controller_name => :filterings, :action_name => :new, :template => "filterings/new" 
+    end
   end
   
   # 정보 요청할 떄

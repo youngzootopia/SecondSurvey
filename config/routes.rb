@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   get    '/login', 					 to: 'sessions#new'
   post   '/login',					 to: 'sessions#create'
   delete '/logout',					 to: 'sessions#destroy'
+  get	 '/filtering',				 to: 'filterings#new'
+  post	 '/filtering',				 to: 'filterings#create'
   
   # 1차 설문
   get	 '/first',	 to: 'first#get_page'

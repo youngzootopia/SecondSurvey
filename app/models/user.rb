@@ -17,4 +17,6 @@ class User < ApplicationRecord
   validates :children, presence: true, on: :create
   validates :job, presence: true, on: :create
   validates :hobby, presence: true, on: :create
+  
+  has_one :filtering
 end
