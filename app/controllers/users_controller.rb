@@ -63,12 +63,12 @@ class UsersController < ApplicationController
   private
     # 회원가입 시 form 파라미터들
     def user_params
-      params.require(:user).permit(:sUserID, :name, :password, :password_confirmation, :birthday, :sex, :married, :children, :job, :hobby)
+      params.require(:user).permit(:sUserID, :name, :password, :password_confirmation, :birthday, :phone, :sex, :married, :children, :job, :company, :hobby)
     end 
     
     # 회원정보 변경 시 form 파라미터들
     def update_params
-      params.require(:user).permit(:name, :birthday, :sex, :married, :children, :job, :hobby)
+      params.require(:user).permit(:name, :birthday, :phone, :sex, :married, :children, :job, :company, :hobby)
     end
     
     # 비밀번호 변경 시 form 파라미터들

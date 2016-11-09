@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107081533) do
+ActiveRecord::Schema.define(version: 20161109012713) do
 
   create_table "clists", primary_key: "CID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Category"
@@ -55,6 +55,8 @@ ActiveRecord::Schema.define(version: 20161107081533) do
     t.string   "hobby",           limit: 100
     t.integer  "currentShot"
     t.integer  "group"
+    t.string   "phone"
+    t.string   "company"
   end
 
   add_foreign_key "filterings", "users", column: "sUserID", primary_key: "sUserID", name: "fk_sUserID_from_users", on_delete: :cascade

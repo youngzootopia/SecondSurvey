@@ -8,4 +8,25 @@ Rails.application.config.assets.version = '1.0'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-# Rails.application.config.assets.precompile += %w( search.js )
+# CSS
+Rails.application.config.assets.precompile += %w( custom/bootstrap/css/bootstrap.min.css )
+Rails.application.config.assets.precompile += %w( custom/bootstrap/css/navvar_color.css )
+Rails.application.config.assets.precompile += %w( custom/set_font.css )
+Rails.application.config.assets.precompile += %w( custom/set_font.css )
+Rails.application.config.assets.precompile += %w( custom/set_grid.css )
+Rails.application.config.assets.precompile += %w( custom/jquery-ui-1.12.1.custom/jquery-ui.css )
+  # for login
+Rails.application.config.assets.precompile += %w( custom/login.css )
+  # for signup, manage user
+Rails.application.config.assets.precompile += %w( custom/signup.css )
+Rails.application.config.assets.precompile += %w( custom/bootstrap/datepicker/css/bootstrap-datepicker3.css )
+# font
+Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
+# JavaScript
+Rails.application.config.assets.precompile += %w( custom/jquery-3.1.1.js )
+Rails.application.config.assets.precompile += %w( custom/bootstrap/js/bootstrap.min.js )
+Rails.application.config.assets.precompile += %w( custom/jquery-ui-1.12.1.custom/jquery-ui.js )
+  # for signup, manage user
+Rails.application.config.assets.precompile += %w( custom/bootstrap/datepicker/js/bootstrap-datepicker.js )
+Rails.application.config.assets.precompile += %w( custom/bootstrap/datepicker/locales/bootstrap-datepicker.kr.min.js )
+Rails.application.config.assets.precompile += %w( custom/datepicker.js )

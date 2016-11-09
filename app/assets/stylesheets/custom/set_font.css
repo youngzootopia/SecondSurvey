@@ -1,0 +1,22 @@
+@font-face {
+font-family: 'BMDOHYEON';
+font-style: normal;
+
+/*src: url('../fonts/BMDOHYEON.ttf');*/
+
+    src: url('fonts/BMDOHYEON.eot');
+    src: url('stylesheets/custom/fonts/BMDOHYEON.eot?#iefix')
+             format('embedded-opentype'),
+         url('fonts/BMDOHYEON.woff') format('woff'),
+         url('/fonts/BMDOHYEON.ttf') format('truetype');
+}
+ 
+html, body, form[name="login"] button, form[name="signup"] button, .datepicker table tr * {
+	/*font-family:'GodoB' !important;*/
+	font: 14px 'BMDOHYEON' !important;
+	font-family:'BMDOHYEON' !important;
+	color: black;
+	}
+	
+
+	

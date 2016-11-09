@@ -12,10 +12,12 @@ class User < ApplicationRecord
   end
   
   validates :birthday, presence: true, on: :create
+  validates :phone, presence: true, on: :create
   validates :sex, presence: true, on: :create
   validates :married, presence: true, on: :create
   validates :children, presence: true, on: :create
   validates :job, presence: true, on: :create
+  validates :company, presence: true, on: :create
   validates :hobby, presence: true, on: :create
   
   has_one :filtering
