@@ -6,7 +6,20 @@ class UsersController < ApplicationController
   
   # 회원가입 버튼 클릭 시 GET
   def new
-    @user = User.new
+    # 로그인 했으면 1차 설문으로 보냄
+    if logged_in?
+      @user = User.find(session[:user_id]) 
+      unless Filtering.exists? @user.sUserID
+        @filtering = Filtering.new
+        render :controller_name => :filterings, :action_name => :new, :template => "filterings/new"
+        
+      else
+        render :controller_name => :first, :action_name => :get_page, :template => "first/get_page"
+      end
+      
+    else
+      @user = User.new
+    end
   end
   
   # 회원가입 완료 시 Post

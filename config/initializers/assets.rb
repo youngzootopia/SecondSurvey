@@ -20,6 +20,8 @@ Rails.application.config.assets.precompile += %w( custom/login.css )
   # for signup, manage user
 Rails.application.config.assets.precompile += %w( custom/signup.css )
 Rails.application.config.assets.precompile += %w( custom/bootstrap/datepicker/css/bootstrap-datepicker3.css )
+  # for filtering
+Rails.application.config.assets.precompile += %w( custom/filtering.css )
 # font
 Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
 # JavaScript

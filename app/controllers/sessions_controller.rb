@@ -1,5 +1,16 @@
 class SessionsController < ApplicationController
   def new
+    # 로그인 했으면 1차 설문으로 보냄
+    if logged_in?
+      @user = User.find(session[:user_id]) 
+      unless Filtering.exists? @user.sUserID
+        @filtering = Filtering.new
+        render :controller_name => :filterings, :action_name => :new, :template => "filterings/new"
+        
+      else
+        render :controller_name => :first, :action_name => :get_page, :template => "first/get_page"
+      end
+    end
   end
  
   def create

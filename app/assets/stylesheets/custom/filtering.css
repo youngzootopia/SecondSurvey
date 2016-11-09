@@ -1,0 +1,15 @@
+
+
+/*set font*/
+form[name="filter"] label {
+	font-weight:normal;
+}
+
+
+
+
+
+form[name="filter"] div[class="col-xs-12 col-sm-8 col-md-8 col-lg-8 col-centered"] {
+	margin-bottom: 15px;
+}
+
