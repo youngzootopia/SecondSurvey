@@ -11,12 +11,47 @@ font-style: normal;
          url('/fonts/BMDOHYEON.ttf') format('truetype');
 }
  
-html, body, form[name="login"] button, form[name="signup"] button, .datepicker table tr * {
+html, body, form[name="login"] button, form[name="signup"] button, .datepicker table tr *  {
 	/*font-family:'GodoB' !important;*/
 	font: 14px 'BMDOHYEON' !important;
 	font-family:'BMDOHYEON' !important;
 	color: black;
 	}
 	
+ input[type="password"] {
+	font-family:verdana;
+}
+::-webkit-input-placeholder {
+   	font: 14px 'BMDOHYEON' !important;
+	font-family:'BMDOHYEON' !important;
+	color: black;
+}
+
+
+:-moz-placeholder { /* Firefox 18- */
+    font: 14px 'BMDOHYEON' !important;
+	font-family:'BMDOHYEON' !important;
+	color: black;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    font: 14px 'BMDOHYEON' !important;
+	font-family:'BMDOHYEON' !important;
+	color: black;  
+}
+
+:-ms-input-placeholder {  
+   	font: 14px 'BMDOHYEON' !important;
+	font-family:'BMDOHYEON' !important;
+	color: black;  
+}
+::-ms-input-placeholder {  
+   	font: 14px 'BMDOHYEON' !important;
+	font-family:'BMDOHYEON' !important;
+	color: black;  
+}
+
+
+
 
 	

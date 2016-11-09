@@ -7,9 +7,7 @@
 <!--body start-->
 <div class="row row-centered">
   <!--signup section-->
-  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 col-centered">	
-	<div class="row row-centered">
-	  <div class="col-xs-12 col-sm-9 col-md-6 col-lg-3 col-centered">
+	  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 col-centered">
 	    <%= form_for(@user, url: signup_path, :html => {name: 'signup'}) do |f| %>
 	      <%= render 'shared/error_messages' %>
 	      <div class="form-group form-inline">
@@ -56,12 +54,12 @@
 			  <div class="btn-group btn-group-justified " data-toggle="buttons"  style="display:inline-block;">
 				<div class="btn-group" >
 				  <label class="btn btn-default active">
-					<%= f.label :"남자" %><%= f.radio_button :sex, 'M', class: 'form-control'  %>
+					<%= f.label :"남자" %><%= f.radio_button :sex, 'M' %>
 				  </label>
 				</div>
 			    <div class="btn-group">
 				  <label class="btn btn-default">
-					<%= f.label :"여자" %><%= f.radio_button :sex, 'F', class: 'form-control'  %>
+					<%= f.label :"여자" %><%= f.radio_button :sex, 'F' %>
 				  </label>									
 			    </div>
 			  </div>									
@@ -82,12 +80,12 @@
 			  <div class="btn-group btn-group-justified " data-toggle="buttons"  style="display:inline-block;">
 				<div class="btn-group" >
 				  <label class="btn btn-default active">
-					<%= f.label :"기혼" %><%= f.radio_button :married, 'T', class: 'form-control'  %>
+					<%= f.label :"기혼" %><%= f.radio_button :married, 'T' %>
 				  </label>
 				</div>
 				<div class="btn-group">
 				  <label class="btn btn-default">
-					<%= f.label :"미혼" %><%= f.radio_button :married, 'F', class: 'form-control'  %>
+					<%= f.label :"미혼" %><%= f.radio_button :married, 'F' %>
 				  </label>									
 				</div>
 			  </div>									
@@ -108,12 +106,12 @@
 			  <div class="btn-group btn-group-justified " data-toggle="buttons"  style="display:inline-block;">
 				<div class="btn-group" >
 	   			  <label class="btn btn-default active">
-					<%= f.label :"자녀 있음" %><%= f.radio_button :children, 'T', class: 'form-control'  %>
+					<%= f.label :"자녀 있음" %><%= f.radio_button :children, 'T' %>
 				  </label>
 				</div>
 			    <div class="btn-group">
 				  <label class="btn btn-default">
-					<%= f.label :"자녀 없음" %><%= f.radio_button :children, 'F', class: 'form-control'  %>
+					<%= f.label :"자녀 없음" %><%= f.radio_button :children, 'F' %>
 				  </label>									
 			    </div>
 			  </div>									
@@ -138,8 +136,6 @@
 		  <button type="submit" class="btn btn-lg btn-default btn-group-justified" >다음</button>			
 	    <% end %>
 	  </div>
-	</div>
-  </div>
 </div>
 
 <% content_for :tail do %>

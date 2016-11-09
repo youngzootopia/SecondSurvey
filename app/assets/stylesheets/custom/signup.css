@@ -13,12 +13,12 @@ form[name="signup"] label {
 	font-weight:normal;
 }
 /*responsive width*/
-form[name="signup"] input[type="text"] {
+form[name="signup"] input[type="text"],form[name="signup"] input[type="password"] {
 	width: 100% !important;
 }
 /*select button color*/
 form[name="signup"] .btn-default.active {
-	background-color: #00ff00 !important;
+	background-color: #F0F0F0; !important;
 }
 
 /*responsive margin*/
