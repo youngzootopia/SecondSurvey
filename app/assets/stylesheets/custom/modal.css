@@ -1,0 +1,65 @@
+﻿/* The Modal (background) */
+.modal {
+    display: block; /* Hidden by default */
+    position: relative; /* Stay in place */
+      
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    /*background-color: rgb(0,0,0); /* Fallback color */
+    /*background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 90%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+
+}
+
+
+
+/* The Close Button */
+.close {
+    /*color: white;*/
+	color: black;
+    float: right;
+	/*
+    font-size: 28px;
+    font-weight: bold;
+	*/
+	font: 28px '고도 B';
+	font-family:'GodoB' !important;
+	margin-left: 30px;
+}
+
+.modal-footer:hover,
+.modal-footer:focus {
+    /*color: #000;*/
+	color: #6caee0;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header {
+    padding: 2px 16px;
+    /*background-color: #5cb85c;*/
+	background-color: #eee;
+    color: black;
+}
+
+.modal-body {padding: 2px 16px;}
+
+
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #eee;
+	font: 28px;
+	color:black;
+}

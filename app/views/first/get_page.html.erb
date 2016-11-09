@@ -1,2 +1,71 @@
-<h1>First#get_page</h1>
-<p>Find me in app/views/first/get_page.html.erb</p>
+<% content_for :head do %>
+  <%= stylesheet_link_tag    'custom/video_js/video-js', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag    'custom/modal', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <style>
+	.modal {
+	  position:relative;
+	}
+  </style>
+<% end %>
+
+<% provide(:title, 'First survey') %>
+<!--body start-->
+<div class="row row-centered">
+  <!--loading bar-->
+  <div class="col-xs-12 col-centered">
+	<div class="progress">
+	  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+		동영상을 받아오고 있습니다.
+	  </div>
+	</div>
+  </div>
+  <!--loading bar end-->
+  
+  <!--video section-->
+  <div class="col-xs-12 col-lg-6 col-centered" id="video_form">
+	<video id="video" class="video-js vjs-default-skin vjs-big-play-centered   vjs-16-9" 
+		   data-setup='{"autoplay":false,"controls": true,"preload": "auto",
+		   "inactivityTimeout": 0,"language":"ko","loop": false}'>
+	  <source src="" type='video/mp4'>
+	</video>
+  </div>
+  <!--video section end-->
+  
+  <!--survey section-->
+  <div class="col-xs-12 col-lg-6 col-centered" id="survey_form">
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" role="dialog">
+	  <div class="modal-dialog modal-lg">
+		<!-- Modal content-->
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Modal Header</h4>
+		  </div>
+		  <div class="modal-body">
+		    <p>Some text in the modal.</p>
+		  </div>
+	      <div class="modal-footer">
+		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+      </div>
+    </div>
+  </div>
+<!--survey section end-->
+</div>
+
+<% content_for :tail do %>
+  <%= javascript_include_tag    'custom/video_js/video', 'custom/video_control_2' %>
+  <script>
+	var vid_tag_id="video";
+	var video_link="0";
+	var start_list= [0.0];
+	var end_list= [0.1];
+	var shot_id_list = [0];
+	var cid="0";
+	var filename="0";
+	var totalShot = 0;
+	var count=0;
+  </script>
+<% end %>

@@ -1,4 +1,5 @@
 class FilteringsController < ApplicationController
+  # for InvalidAuthenticityToken
   skip_before_filter :verify_authenticity_token
   
   # GET /filtering

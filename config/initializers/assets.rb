@@ -22,6 +22,9 @@ Rails.application.config.assets.precompile += %w( custom/signup.css )
 Rails.application.config.assets.precompile += %w( custom/bootstrap/datepicker/css/bootstrap-datepicker3.css )
   # for filtering
 Rails.application.config.assets.precompile += %w( custom/filtering.css )
+  # for first survey
+Rails.application.config.assets.precompile += %w( custom/video_js/video-js.css )
+Rails.application.config.assets.precompile += %w( custom/modal.css )
 # font
 Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
 # JavaScript
@@ -32,3 +35,6 @@ Rails.application.config.assets.precompile += %w( custom/jquery-ui-1.12.1.custom
 Rails.application.config.assets.precompile += %w( custom/bootstrap/datepicker/js/bootstrap-datepicker.js )
 Rails.application.config.assets.precompile += %w( custom/bootstrap/datepicker/locales/bootstrap-datepicker.kr.min.js )
 Rails.application.config.assets.precompile += %w( custom/datepicker.js )
+# for first survey
+Rails.application.config.assets.precompile += %w( custom/video_js/video.js )
+Rails.application.config.assets.precompile += %w( custom/video_control_2.js )

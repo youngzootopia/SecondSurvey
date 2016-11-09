@@ -12,22 +12,25 @@ $( document ).ready(function() {
 
 function first() {
 	$.ajax({
-		type: 'POST',
-		url: 'serv.php',
+		type: 'GET',
+		url: '/get_first_infomation',
 		data: {},
 		dataType: 'json',
 		//무조건 json으로만통신하도록 수정
 		success: function(data) {
-			
-				//console.log('submit success '+data.link);
-				video_link=data.videoURL;
-				start_list=JSON.parse(data.shotIDList);
-				end_list=JSON.parse(data.endTimeList);
-				shot_id_list=JSON.parse(data.shotIDList);
-				cid=data.CID;
-				filename=data.title;
 				
 
+				console.log(data);
+				
+				video_link='/assets/'+data[0].videoURL;
+				start_list=data[0].startTimeList;
+				
+				end_list=data[0].endTimeList;
+				shot_id_list=data[0].shotIDList;
+				cid=data[0].CID;
+				filename=data[0].title;
+				
+				console.log(start_list[0]);
 				
 				init();
 				
@@ -115,7 +118,7 @@ function next_button() {
 	
 	$.ajax({
 		type: 'POST',
-		url: 'serv.php',
+		url: '/get_first_infomation',
 		data: {
 			survey: JSON.stringify(dat),
 			},
@@ -178,12 +181,14 @@ function hide_video() {
 function show_survey() {
 	$("#survey_form").show('slide');
 	$("#video_form").css("float","left");
+	$("#myModal").modal("show");
 	//move scroll
 	$('html, body').animate({scrollTop : $("#survey_form").offset().top}, 400);
 }
 function hide_survey() {
 	$("#survey_form").hide();
 	$("#video_form").css("float","none");
+	$("#myModal").modal("hide");
 	//move scroll
 	$('html, body').animate({scrollTop : $("#video_form").offset().top}, 400);
 }

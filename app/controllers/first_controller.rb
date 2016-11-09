@@ -13,7 +13,7 @@ class FirstController < ApplicationController
     
     request.format = :json
     respond_to do |format|
-      format.json { render :json => [@shotIDList, @startTimeList, @endTimeList, @videoURL, @CID, @title] }
+    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title] }
     end
   end
   
@@ -68,13 +68,5 @@ class FirstController < ApplicationController
       # CID, 동영상 제목
       @CID = @video.CID
       @title = @video.ProgramNameKor
-      
-      # Json Object로 변환   
-      @shotIDList = ActiveSupport::JSON.encode({ shotIDList: @shotIDList })
-      @startTimeList = ActiveSupport::JSON.encode({ startTimeList: @startTimeList })
-      @endTimeList = ActiveSupport::JSON.encode({ endTimeList: @endTimeList })
-      @videoURL = ActiveSupport::JSON.encode({ videoURL: @videoURL })
-      @CID = ActiveSupport::JSON.encode({ CID: @CID })
-      @title = ActiveSupport::JSON.encode({ title: @title })
     end
 end
