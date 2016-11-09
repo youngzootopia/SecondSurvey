@@ -1,4 +1,6 @@
 class FilteringsController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+  
   # GET /filtering
   def new
     @filtering = Filtering.new
@@ -10,7 +12,7 @@ class FilteringsController < ApplicationController
     @filtering.sUserID = session[:user_id]
           
     if @filtering.save
-      render :controller_name => :first, :action_name => :get_page, :template => "first/get_page"
+      redirect_to "/first"
     else
       render 'new'
     end

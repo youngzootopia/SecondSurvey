@@ -3,8 +3,7 @@ class FirstController < ApplicationController
   def get_page
     @user = User.find(session[:user_id])
     unless Filtering.exists? @user.sUserID
-      @filtering = Filtering.new
-      render :controller_name => :filterings, :action_name => :new, :template => "filterings/new" 
+      redirect_to "/filtering" 
     end
   end
   
