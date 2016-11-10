@@ -1,11 +1,7 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag    'custom/video_js/video-js', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_link_tag    'custom/modal', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <style>
-	.modal {
-	  position:relative;
-	}
-  </style>
+
 <% end %>
 
 <% provide(:title, 'First survey') %>
@@ -13,7 +9,7 @@
 <div class="row row-centered">
   <!--loading bar-->
   <div class="col-xs-12 col-centered">
-	<div class="progress">
+	<div class="progress" style="display:none;">
 	  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 		동영상을 받아오고 있습니다.
 	  </div>
@@ -26,7 +22,7 @@
 	<video id="video" class="video-js vjs-default-skin vjs-big-play-centered   vjs-16-9" 
 		   data-setup='{"autoplay":false,"controls": true,"preload": "auto",
 		   "inactivityTimeout": 0,"language":"ko","loop": false}'>
-	  <source src="" type='video/mp4'>
+	  <!--<source src="" type='video/mp4'>-->
 	</video>
   </div>
   <!--video section end-->
@@ -35,7 +31,7 @@
   <div class="col-xs-12 col-lg-6 col-centered" id="survey_form">
 	<!-- Modal -->
 	<div class="modal fade" id="myModal" role="dialog">
-	  <div class="modal-dialog modal-lg">
+	  <div class="modal-dialog">
 		<!-- Modal content-->
 		<div class="modal-content">
 		  <div class="modal-header">
@@ -44,9 +40,15 @@
 		  </div>
 		  <div class="modal-body">
 		    <p>Some text in the modal.</p>
+			<div id="rateYo"></div>
 		  </div>
 	      <div class="modal-footer">
-		    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="next_button();">
+
+				다음
+				<span class="glyphicon glyphicon-circle-arrow-right"></span>
+	
+			</button>
 	      </div>
 	    </div>
       </div>
@@ -68,4 +70,6 @@
 	var totalShot = 0;
 	var count=0;
   </script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.2.0/jquery.rateyo.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.2.0/jquery.rateyo.min.js"></script>
 <% end %>

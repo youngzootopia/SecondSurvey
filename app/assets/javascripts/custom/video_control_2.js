@@ -7,6 +7,13 @@ $( document ).ready(function() {
 	$( '#survey_form' ).ready(hide_survey);
 	$( ".progress" ).ready(hide_loading_bar);
 	first();
+	
+	$("#rateYo").rateYo({
+    rating: 3.0,
+	numStars: 10,
+	maxValue:10,
+	fullStar:true
+  });
 					
 });
 
@@ -33,6 +40,8 @@ function first() {
 				console.log(start_list[0]);
 				
 				init();
+				
+				data=null;
 				
 			},
 		error: function(request, status, error ) {
@@ -107,45 +116,51 @@ function time_out() {
 
 function next_button() {
 	
-	var dat = new Object();
+	var survey = new Object();
 	
-	dat.cid=cid;
-	dat.filename=filename;
+	survey.cid=cid;
+	survey.filename=filename;
+	survey.shot_id=shot_id_list[count];
+	survey.comment='good';
+	survey.ratinng='10.0';
 	
-	var is_Last=false;
-	
-	if(count>=(shot_id_list.length-1)) {	is_Last=true;}
+
 	
 	$.ajax({
 		type: 'POST',
 		url: '/get_first_infomation',
 		data: {
-			survey: JSON.stringify(dat),
+			survey: JSON.stringify(survey),
 			},
 		dataType: 'json',
 		//무조건 json으로만통신하도록 수정
 		success: function(data) {
 				//console.log('submit success '+data.link);
 				
-				if(video_link==data.videoURL) {
+				if(video_link=='/assets/'+data[0].videoURL) {
 					count++;
 					videojs(vid_tag_id).on("timeupdate",time_out);
 					set_curtime(videojs(vid_tag_id));
 					videojs(vid_tag_id).play();					
 				} else{
 
-					video_link=data.videoURL;
-					start_list=JSON.parse(data.shotIDList);
-					end_list=JSON.parse(data.endTimeList);
-					shot_id_list=JSON.parse(data.shotIDList);
-					cid=data.CID;
-					filename=data.title;				
+					video_link='/assets/'+data[0].videoURL;
+					start_list=data[0].startTimeList;
+					
+					end_list=data[0].endTimeList;
+					shot_id_list=data[0].shotIDList;
+					cid=data[0].CID;
+					filename=data[0].title;
+					
+					//console.log(start_list[0]);			
 				
 					var myPlayer=videojs(vid_tag_id);	
 					myPlayer.src(video_link);
 					myPlayer.on('loadedmetadata',loading_end);
 					myPlayer=null;				
-				}		
+				}	
+
+				data=null;
 			},
 		error: function(request, status, error ) {
 				
@@ -159,7 +174,7 @@ function next_button() {
 	hide_survey();
 	
 	dat=null;
-	isLast=null;
+	
 }
 
 

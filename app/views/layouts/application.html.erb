@@ -45,10 +45,13 @@
 	            <li><a href="/first">1차 설문</a></li>
 	            <li><a href="/get_first_infomation">2차 설문</a></li>
 	            <li><a href="/contact">문의사항</a></li>
+	            <% if is_admin %>
+	              <li><a href="/admin">관리메뉴</a></li>
+	            <% end %>
 				<li class="dropdown">
 				  <% if logged_in? %>
 				  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu dropdown-menu-right">
 					  <li><%= link_to "로그아웃", logout_path, method: "delete" %></li>
 		              <li><a href="#">내 진행상황</a></li>
 		              <li class="divider"></li>
