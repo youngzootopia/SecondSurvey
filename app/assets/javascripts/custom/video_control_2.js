@@ -10,9 +10,9 @@ $( document ).ready(function() {
 	
 	$("#rateYo").rateYo({
     rating: 3.0,
-	numStars: 10,
+	numStars: 5,
 	maxValue:10,
-	fullStar:true
+	halfStar: true
   });
 					
 });
@@ -122,7 +122,7 @@ function next_button() {
 	survey.filename=filename;
 	survey.shot_id=shot_id_list[count];
 	survey.comment='good';
-	survey.ratinng='10.0';
+	survey.ratinng= $("#rateYo").rateYo('rating');
 	
 
 	
