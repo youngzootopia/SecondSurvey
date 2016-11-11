@@ -73,6 +73,57 @@ class UsersController < ApplicationController
     end
   end
   
+  # ADMIN
+  # user 리스트 보기
+  def index
+    @users = User.all
+  end
+  
+  # 관리자가 유저를 추가할 떄
+  def admin_new
+    @user = User.new
+  end
+  
+  def admin_create
+    @user = User.new(admin_user_params)
+    
+    respond_to do |format|
+      begin
+        @user.save
+        format.html { redirect_to "/admin/users", notice: "#{@user.name} 회원이 정상적으로 추가되었습니다." }
+      rescue ActiveRecord::InvalidForeignKey  => e
+        format.html { redirect_to "/admin/users/admin_new", notice: "회원 추가에 실패했습니다." }
+      end
+    end
+  end
+  
+  # 관리자가 유저 정보를 수정할 떄
+  def admin_edit
+    @user = User.find(params[:sUserID])
+  end
+  
+  def admin_update
+    @user = User.find(params[:sUserID])
+    
+    respond_to do |format|
+      if @user.update(admin_update_params)
+        format.html { redirect_to "/admin/users", notice: "#{@user.name}의 정보가 정상적으로 수정되었습니다." }
+      else
+        format.html { render :admin_edit }
+      end
+    end
+  end
+  
+  # 관리자가 유저를 삭제할 때
+  def destroy
+    @user = User.find(params[:sUserID])
+    @name = @user.name
+    @user.destroy
+    respond_to do |format|
+      format.html { redirect_to "/admin/users", notice: "#{@name} 회원이 정상적으로 삭제되었습니다." }
+    end
+  end
+  
   private
     # 회원가입 시 form 파라미터들
     def user_params
@@ -87,5 +138,18 @@ class UsersController < ApplicationController
     # 비밀번호 변경 시 form 파라미터들
     def password_params
       params.require(:user).permit(:password, :password_confirmation)
+    end
+    
+    # ADMIN
+    # 관리자 수정 form 파라미터들
+    def admin_update_params
+      # 2차 설문 추가 필요
+      params.require(:user).permit(:sUserID, :name, :birthday, :phone, :sex, :married, :children, :job, :company, :hobby, :currentShot, :group)
+    end
+    
+    # 관리자 추가 form 파라미터들
+    def admin_user_params
+      # 2차 설문 추가 필요
+      params.require(:user).permit(:sUserID, :name, :password, :password_confirmation, :birthday, :phone, :sex, :married, :children, :job, :company, :hobby, :currentShot, :group)
     end
 end

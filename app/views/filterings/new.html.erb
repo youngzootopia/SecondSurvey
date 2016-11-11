@@ -4,7 +4,7 @@
 
 <% provide(:title, 'Filtering') %>
 <div class="row row-centered">
-  <div class="col-xs-12 col-sm-9 col-md-6 col-lg-3 col-centered">
+  <div class="col-xs-12 col-sm-9 col-md-6 col-lg-5 col-centered">
     <%= form_for(@filtering, :url => 'filtering',  :html => {name: 'filter'}) do |f| %>
       <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered">
       	<%= f.label :"좋아하는 사이트" %>
@@ -37,7 +37,9 @@
       		 {class: 'form-control'} %>
       </div>
       
-      <button type="submit" class="btn btn-lg btn-default btn-group-justified" >저장</button>
+      <button type="submit" class="btn btn-lg btn-default btn-group-justified" >저장
+		<span class="glyphicon glyphicon-floppy-disk"></span>
+	  </button>
     <% end %>
   </div>
 </div>

@@ -10,8 +10,15 @@ Rails.application.routes.draw do
   # 관리자 페이지
   get	 '/admin',								 to: 'home#admin'
   
+  # 유저 관리
+  get	 '/admin/users',						 to: 'users#index'
+  get	 '/admin/users/admin_new',				 to: 'users#admin_new'
+  post	 '/admin/users/admin_new',				 to: 'users#admin_create'
+  get	 '/admin/users/edit:sUserID',		 	 to: 'users#admin_edit'
+  post	 '/admin/users/edit:sUserID',			 to: 'users#admin_update'
+  get	 '/admin/users/delete', 				 to: 'users#destroy'
+  
   # 필터링 관리
-  # list 보기
   get	 '/admin/filterings',					 to: 'filterings#index'
   get	 '/admin/filterings/admin_new',			 to: 'filterings#admin_new'
   post	 '/admin/filterings/admin_new',	 to: 'filterings#admin_create'

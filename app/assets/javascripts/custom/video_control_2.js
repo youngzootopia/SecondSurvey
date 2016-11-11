@@ -18,39 +18,15 @@ $( document ).ready(function() {
 });
 
 function first() {
+	
+	video_link=null;
 	$.ajax({
 		type: 'GET',
 		url: '/get_first_infomation',
-		data: {},
+		data: {survey: JSON.stringify('init'),},
 		dataType: 'json',
-		//무조건 json으로만통신하도록 수정
-		success: function(data) {
-				
-
-				console.log(data);
-				
-				video_link='/assets/'+data[0].videoURL;
-				start_list=data[0].startTimeList;
-				
-				end_list=data[0].endTimeList;
-				shot_id_list=data[0].shotIDList;
-				cid=data[0].CID;
-				filename=data[0].title;
-				
-				console.log(start_list[0]);
-				
-				init();
-				
-				data=null;
-				
-			},
-		error: function(request, status, error ) {
-			
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				
-				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-																										
-			}
+		success: ajax_get_data,
+		error: ajax_error
 	});
 		
 }
@@ -76,7 +52,7 @@ function init() {
 function fast_start(myPlayer){
 	console.log('fast_start');
 	myPlayer.src(video_link);
-	video_link=null;
+	//video_link=null;
 	
 	//myPlayer.on('loadeddata',loading_start);
 	myPlayer.on('loadedmetadata',loading_end);
@@ -98,18 +74,20 @@ function loading_end() {
 }
 function set_curtime(myPlayer) {
 	
-	//console.log('time is:'+start_list[count])
-	
 	myPlayer.currentTime(start_list[count]);
 	myPlayer=null;
 }
 function time_out() {
 	
+	if(this.duration()<end_list[count]) {
+		//영상의 전체길이보다 더 긴 경우 수정
+		end_list[count]=this.duration();
+	}
+
 	if(this.currentTime()>=end_list[count]) {
 		this.off("timeupdate",time_out);
 		this.pause();
-		//console.log('shot end');
-		
+
 		show_survey();
 	}
 }
@@ -123,51 +101,17 @@ function next_button() {
 	survey.shot_id=shot_id_list[count];
 	survey.comment='good';
 	survey.ratinng= $("#rateYo").rateYo('rating');
+	survey.time=end_list[count];
 	
 
 	
 	$.ajax({
 		type: 'POST',
 		url: '/get_first_infomation',
-		data: {
-			survey: JSON.stringify(survey),
-			},
+		data: {survey: JSON.stringify(survey),},
 		dataType: 'json',
-		//무조건 json으로만통신하도록 수정
-		success: function(data) {
-				//console.log('submit success '+data.link);
-				
-				if(video_link=='/assets/'+data[0].videoURL) {
-					count++;
-					videojs(vid_tag_id).on("timeupdate",time_out);
-					set_curtime(videojs(vid_tag_id));
-					videojs(vid_tag_id).play();					
-				} else{
-
-					video_link='/assets/'+data[0].videoURL;
-					start_list=data[0].startTimeList;
-					
-					end_list=data[0].endTimeList;
-					shot_id_list=data[0].shotIDList;
-					cid=data[0].CID;
-					filename=data[0].title;
-					
-					//console.log(start_list[0]);			
-				
-					var myPlayer=videojs(vid_tag_id);	
-					myPlayer.src(video_link);
-					myPlayer.on('loadedmetadata',loading_end);
-					myPlayer=null;				
-				}	
-
-				data=null;
-			},
-		error: function(request, status, error ) {
-				
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-																									
-			}
+		success: ajax_get_data,
+		error: ajax_error
 	});
 	
 
@@ -177,6 +121,38 @@ function next_button() {
 	
 }
 
+function ajax_get_data(data) {
+	//console.log('submit success '+data.link);
+				
+	if(video_link=='/assets/'+data[0].videoURL) {
+		//링크가 일치하면 영상을 계속 진행
+		count++;
+		videojs(vid_tag_id).on("timeupdate",time_out);
+		set_curtime(videojs(vid_tag_id));
+		videojs(vid_tag_id).play();					
+	} else{
+		//처음이거나 해당 영상의 샷을 다 진행해서 다음 링크를 받은경우
+		video_link='/assets/'+data[0].videoURL;
+		start_list=data[0].startTimeList;
+					
+		end_list=data[0].endTimeList;
+		shot_id_list=data[0].shotIDList;
+		cid=data[0].CID;
+		filename=data[0].title;
+
+		init();
+	}	
+
+	data=null;
+}
+
+function ajax_error(request, status, error ) {
+			
+	console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				
+	alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+																										
+}
 
 
 function show_loading_bar(){

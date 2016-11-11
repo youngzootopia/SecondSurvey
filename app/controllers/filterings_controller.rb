@@ -52,10 +52,8 @@ class FilteringsController < ApplicationController
     respond_to do |format|
       if @filtering.update(filtering_params)
         format.html { redirect_to "/admin/filterings", notice: "#{@filtering.sUserID}의 필터링이 정상적으로 수정되었습니다." }
-        format.json { render :show, status: :ok, location: @filtering }
       else
         format.html { render :edit }
-        format.json { render json: @filtering.errors, status: :unprocessable_entity }
       end
     end
   end

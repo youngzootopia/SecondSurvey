@@ -8,7 +8,7 @@
 <div class="row row-centered">
   <!--signup section-->
 	  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-9 col-centered">
-	    <%= form_for(@user, url: signup_path, :html => {name: 'signup'}) do |f| %>
+	    <%= form_for(@user, :url => "/admin/users/edit#{@user.sUserID}", :html => {name: 'signup', method: 'POST'}) do |f| %>
 	      <%= render 'shared/error_messages' %>
 	      <div class="form-group form-inline">
 		    <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 col-centered">
@@ -27,21 +27,6 @@
 		  
 		  <div class="form-group form-inline">
 			<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 col-centered">
-			  <%= f.label :비밀번호 %>
-			</div>
-			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered">
-			  <%= f.password_field :password, class: 'form-control' %>
-			</div>
-			<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 col-centered">
-			  <%= f.label :password_confirmation, "비밀번호 확인" %>
-			</div>
-			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered">
-			  <%= f.password_field :password_confirmation, class: 'form-control' %>
-			</div>
-		  </div>
-		  
-		  <div class="form-group form-inline">
-			<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 col-centered">
 			  <%= f.label :생년월일 %>
 			</div>
 		  	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered">
@@ -52,9 +37,21 @@
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered ">														
 			  <div class="btn-group btn-group-justified " data-toggle="buttons"  style="display:inline-block;">
+				<% if is_false @user.sex %>
 				<div class="btn-group" >
+				  <label class="btn btn-default">
+					<%= f.label :"남자" %><%= f.radio_button :sex, 'M' %>
+				  </label>
+				</div>
+			    <div class="btn-group">
 				  <label class="btn btn-default active">
-					<%= f.label :"남자" %><%= f.radio_button :sex, 'M', { :checked => true } %>
+					<%= f.label :"여자" %><%= f.radio_button :sex, 'F' %>
+				  </label>									
+			    </div>
+			    <% else %>
+			    <div class="btn-group" >
+				  <label class="btn btn-default active">
+					<%= f.label :"남자" %><%= f.radio_button :sex, 'M' %>
 				  </label>
 				</div>
 			    <div class="btn-group">
@@ -62,6 +59,7 @@
 					<%= f.label :"여자" %><%= f.radio_button :sex, 'F' %>
 				  </label>									
 			    </div>
+			    <% end %>
 			  </div>									
 		    </div>
 		  </div>
@@ -78,9 +76,21 @@
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered ">														
 			  <div class="btn-group btn-group-justified " data-toggle="buttons"  style="display:inline-block;">
+				<% if is_false @user.married %>
+				<div class="btn-group" >
+				  <label class="btn btn-default">
+					<%= f.label :"기혼" %><%= f.radio_button :married, 'T' %>
+				  </label>
+				</div>
+				<div class="btn-group">
+				  <label class="btn btn-default active">
+					<%= f.label :"미혼" %><%= f.radio_button :married, 'F' %>
+				  </label>									
+				</div>
+				<% else %>
 				<div class="btn-group" >
 				  <label class="btn btn-default active">
-					<%= f.label :"기혼" %><%= f.radio_button :married, 'T', { :checked => true } %>
+					<%= f.label :"기혼" %><%= f.radio_button :married, 'T' %>
 				  </label>
 				</div>
 				<div class="btn-group">
@@ -88,6 +98,7 @@
 					<%= f.label :"미혼" %><%= f.radio_button :married, 'F' %>
 				  </label>									
 				</div>
+				<% end %>
 			  </div>									
 			</div>
 		  </div>
@@ -104,9 +115,21 @@
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered ">														
 			  <div class="btn-group btn-group-justified " data-toggle="buttons"  style="display:inline-block;">
+				<% if is_false @user.children %>
 				<div class="btn-group" >
+	   			  <label class="btn btn-default">
+					<%= f.label :"자녀 있음" %><%= f.radio_button :children, 'T' %>
+				  </label>
+				</div>
+			    <div class="btn-group">
+				  <label class="btn btn-default active">
+					<%= f.label :"자녀 없음" %><%= f.radio_button :children, 'F' %>
+				  </label>									
+			    </div>
+			    <% else %>
+			    <div class="btn-group" >
 	   			  <label class="btn btn-default active">
-					<%= f.label :"자녀 있음" %><%= f.radio_button :children, 'T', { :checked => true } %>
+					<%= f.label :"자녀 있음" %><%= f.radio_button :children, 'T' %>
 				  </label>
 				</div>
 			    <div class="btn-group">
@@ -114,6 +137,7 @@
 					<%= f.label :"자녀 없음" %><%= f.radio_button :children, 'F' %>
 				  </label>									
 			    </div>
+			    <% end %>
 			  </div>									
 			</div>
 		  </div>
@@ -131,6 +155,34 @@
 			</div>
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered">
 			  <%= f.text_field :hobby, class: 'form-control'  %>
+			</div>
+		  </div>
+		  
+		  <div class="form-group form-inline">
+			<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 col-centered">
+			  <%= f.label :'1차 설문' %>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered">
+			  <%= f.text_field :currentShot, class: 'form-control'  %>
+			</div>
+			
+			<!-- 2차 설문 추가 필요				
+			<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 col-centered">
+			  <%= f.label :'2차 설문' %>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered">
+			  
+			</div> -->
+		  </div>
+		  
+		  <div class="form-group form-inline">
+			<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 col-centered">
+			  <%= f.label :그룹 %>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered">
+			  <%= f.select :group, 
+      						[['관리자', '0'], ['1번 그룹', '1'], ['2번 그룹', '2'], ['3번 그룹', '3']], {},
+      		 				{class: 'form-control'} %>
 			</div>
 		  </div>
 		  <button type="submit" class="btn btn-lg btn-default btn-group-justified" >다음</button>			
