@@ -36,5 +36,6 @@ Rails.application.routes.draw do
   # 1차 설문
   get	 '/first',								 to: 'first#get_page'
   get	 '/get_first_infomation',				 to: 'first#get_json'
+  post	 '/get_first_infomation',				 to: 'first#survey_commit'
  	 
 end

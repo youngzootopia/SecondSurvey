@@ -1,4 +1,7 @@
 class FirstController < ApplicationController
+  # for InvalidAuthenticityToken
+  skip_before_filter :verify_authenticity_token
+  
   # 설문 페이지
   def get_page
     @user = User.find(session[:user_id])
@@ -11,6 +14,18 @@ class FirstController < ApplicationController
   def get_json
     get_infomation
     
+    request.format = :json
+    respond_to do |format|
+    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title] }
+    end
+  end
+  
+  # 설문 결과 저장하고 정보 전송
+  def survey_commit
+    
+    # 정보 전송
+    get_infomation
+        
     request.format = :json
     respond_to do |format|
     format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title] }
