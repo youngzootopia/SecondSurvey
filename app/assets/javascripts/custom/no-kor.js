@@ -10,7 +10,7 @@ $('#user_sUserID').ready(function() {
 });
 
 function check_ID(e) {
-	console.log(this.value);
+	//console.log(this.value);
 	this.value = this.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
 	
 }
