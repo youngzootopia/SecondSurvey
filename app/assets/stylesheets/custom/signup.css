@@ -11,6 +11,7 @@
 /*set font*/
 form[name="signup"] label {
 	font-weight:normal;
+	margin:0 auto;
 }
 /*responsive width*/
 form[name="signup"] input[type="text"],form[name="signup"] input[type="password"] {
@@ -26,4 +27,11 @@ form[name="signup"] .btn-default.active {
 	form[name="signup"] div[class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered"] {
 		margin-bottom: 15px;
 	}
+}
+form[name="signup"] button[type="submit"] .glyphicon {
+	vertical-align:text-top;
+}
+
+form[name="signup"] .form-control[readonly] {
+	background-color:#fff;
 }

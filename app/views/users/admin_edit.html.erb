@@ -30,7 +30,7 @@
 			  <%= f.label :생년월일 %>
 			</div>
 		  	<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 col-centered">
-			  <%= f.text_field :birthday, class: 'form-control'  %>
+			  <%= f.text_field :birthday, class: 'form-control', readonly: 'true' %>
 			</div>
 			<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 col-centered">
 			  <%= f.label :성별 %>
@@ -191,5 +191,5 @@
 </div>
 
 <% content_for :tail do %>
-  <%= javascript_include_tag    'custom/bootstrap/datepicker/js/bootstrap-datepicker', 'custom/bootstrap/datepicker/locales/bootstrap-datepicker.kr.min', 'custom/datepicker' %>
+  <%= javascript_include_tag    'custom/bootstrap/datepicker/js/bootstrap-datepicker', 'custom/bootstrap/datepicker/locales/bootstrap-datepicker.kr.min', 'custom/datepicker', 'custom/no-kor' %>
 <% end %>

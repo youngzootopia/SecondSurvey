@@ -61,4 +61,7 @@ ul[class*="dropdown-menu"] {
 	min-width:120px !important;
 }
 
+body > div[class="container"], body > div[class="container-fluid"] {
+	min-width:250px !important;
+}
 

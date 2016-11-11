@@ -32,6 +32,8 @@ class UsersController < ApplicationController
     # group 구분 해야 함. 확실하지 않기 때문에 일단 1로 할당.
     @user.group = 1
     
+    @user.phone.gsub!('-', '')
+    
     if @user.save
       log_in @user
       flash[:success] = "Welcome to the Sample App!"
@@ -87,6 +89,8 @@ class UsersController < ApplicationController
   def admin_create
     @user = User.new(admin_user_params)
     
+    @user.phone.gsub!('-', '')
+    
     respond_to do |format|
       begin
         @user.save
@@ -132,6 +136,7 @@ class UsersController < ApplicationController
     
     # 회원정보 변경 시 form 파라미터들
     def update_params
+      params[:user][:phone].gsub!('-', '')
       params.require(:user).permit(:name, :birthday, :phone, :sex, :married, :children, :job, :company, :hobby)
     end
     
@@ -144,6 +149,7 @@ class UsersController < ApplicationController
     # 관리자 수정 form 파라미터들
     def admin_update_params
       # 2차 설문 추가 필요
+      params[:user][:phone].gsub!('-', '')
       params.require(:user).permit(:sUserID, :name, :birthday, :phone, :sex, :married, :children, :job, :company, :hobby, :currentShot, :group)
     end
     

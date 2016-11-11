@@ -1,6 +1,7 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag    'custom/video_js/video-js', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_link_tag    'custom/modal', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag    'custom/jquery.rateyo.min', media: 'all', 'data-turbolinks-track': 'reload' %>
 
 <% end %>
 
@@ -58,7 +59,7 @@
 </div>
 
 <% content_for :tail do %>
-  <%= javascript_include_tag    'custom/video_js/video', 'custom/video_control_2' %>
+  <%= javascript_include_tag 'custom/video_js/video', 'custom/video_control_2', 'custom/jquery.rateyo.min' %>
   <script>
 	var vid_tag_id="video";
 	var video_link="0";
