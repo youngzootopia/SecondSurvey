@@ -11,10 +11,12 @@ $('#user_sUserID').ready(function() {
 
 function check_ID(e) {
 	//console.log(this.value);
-	this.value = this.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');
+	//delete kor white space
+	this.value = this.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣 ]/g, '');
 	
 }
 function check_Phone(e) {
+	//delete kor eng white space
 	this.value = this.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣 a-z A-Z]/g, '');
 }
 
