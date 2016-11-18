@@ -18,3 +18,10 @@ form[name="login"] div[class="input-group"], form[name="login"] button {
 form[name="login"] a {
 	text-decoration: none !important;
 }
+
+/*
+form[name="login"] input:required:focus {
+	border: 1px solid red;
+	outline: none;
+}
+*/

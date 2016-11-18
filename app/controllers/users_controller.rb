@@ -1,44 +1,45 @@
 class UsersController < ApplicationController
-  # 회원가입시 보여지는 창
-  def show
-    @user = User.find(params[:id])
-  end
-  
   # 회원가입 버튼 클릭 시 GET
   def new
-    # 로그인 했으면 1차 설문으로 보냄
-    if logged_in?
-      @user = User.find(session[:user_id]) 
-      unless Filtering.exists? @user.sUserID
+    # 로그인한 유저는 회원가입을 할 수 없기 때문에
+    if logged_in? # 이미 로그인 했다면
+      @user = User.find(session[:user_id]) # SELECT * FROM users WHERE sUserID = 로그인 세션의 유저 아이디
+      unless Filtering.exists? @user.sUserID # 필터링조사를 하지 않았다면
+        # 필터링조사 페이지로
         @filtering = Filtering.new
         render :controller_name => :filterings, :action_name => :new, :template => "filterings/new"
         
       else
+        # 진행상황 나오면 수정 필요 
         render :controller_name => :first, :action_name => :get_page, :template => "first/get_page"
       end
       
-    else
+    else # 로그인 하지 않은 경우 정상적으로 회원가입 페이지
       @user = User.new
     end
+    
+    # render, redirect 등 이런게 마지막에 없을 경우 자동으로 new(함수 명).html을 랜더링
   end
   
   # 회원가입 완료 시 Post
   def create
-    @user = User.new(user_params)    # Not the final implementation!
+    # 아래의 user_params 함수를 호출해 HTML form 데이터의 유효성 검사를 진행하고 정상이라면  
+    @user = User.new(user_params)
     
     # 처음 가입하는 유저는 currentShot이 0으로 초기화
     @user.currentShot = 0
     
-    # group 구분 해야 함. 확실하지 않기 때문에 일단 1로 할당.
+    # group 구분 해야 함. 확실하지 않기 때문에 일단 1로 할당
     @user.group = 1
     
+    # 전화번호의 -을 없앰
     @user.phone.gsub!('-', '')
     
-    if @user.save
-      log_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      render 'show'
-    else
+    if @user.save # 데이터베이스에 잘 저장 되었다면
+      log_in @user # 자동으로 로그인
+      # 진행상황 나오면 수정 필요 
+      render :controller_name => :first, :action_name => :get_page, :template => "first/get_page"
+    else # 데이터베이스에 저장 실패할 경우 다시 회원가입 페이지
       render 'new'
     end
   end
@@ -132,7 +133,7 @@ class UsersController < ApplicationController
     # 회원가입 시 form 파라미터들
     def user_params
       params.require(:user).permit(:sUserID, :name, :password, :password_confirmation, :birthday, :phone, :sex, :married, :children, :job, :company, :hobby)
-    end 
+    end
     
     # 회원정보 변경 시 form 파라미터들
     def update_params

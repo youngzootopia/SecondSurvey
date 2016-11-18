@@ -73,8 +73,8 @@ class FirstController < ApplicationController
       @endTimeList = Array.new
       @user.currentShot.step(@shotList.last.ShotID, @user.group) do |shotID|
         @shotIDList.push shotID
-        @startTimeList.push (@shotList.find(shotID).StartFrame / @video.FPS)
-        @endTimeList.push (@shotList.find(shotID).EndFrame / @video.FPS) 
+        @startTimeList.push(@shotList.find(shotID).StartFrame / @video.FPS)
+        @endTimeList.push(@shotList.find(shotID).EndFrame / @video.FPS) 
       end
       
       # 동영상 스테틱 URL 미완.

@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
         render :controller_name => :filterings, :action_name => :new, :template => "filterings/new"
         
       else
+        # 진행상황 나오면 수정 필요 
         render :controller_name => :first, :action_name => :get_page, :template => "first/get_page"
       end
     end
@@ -18,6 +19,7 @@ class SessionsController < ApplicationController
     
     if user && user.authenticate(params[:session][:password])
       log_in user
+      # 진행상황 나오면 수정 필요 
       redirect_to "/first"
     else
       flash[:danger] = 'Invalid id/password combination' # Not quite right!

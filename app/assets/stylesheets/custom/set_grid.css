@@ -37,11 +37,6 @@
     /* inline-block space fix */
     margin-right:-4px;
 }
-/*set progressbar width*/
-.col-centered > .progress {
-	width:40%;
-	margin: 0px auto;
-}
 
 
 #video_form, #survey_form {

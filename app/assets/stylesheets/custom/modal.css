@@ -37,3 +37,9 @@ div[id="survey_form"] .modal-footer button {
 div[id="survey_form"] .modal-footer button .glyphicon {
 	vertical-align:text-top;
 }
+
+/*set progressbar width*/
+.col-centered > .progress {
+	width: 60%;
+	margin: 0px auto;
+}
