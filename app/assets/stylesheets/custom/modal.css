@@ -1,40 +1,44 @@
 ﻿
-div[id="survey_form"] .modal {
+
+
+div[id="survey"] .modal {
 	position:relative;
 	display:inline-block;
 	width:100%;	
 }
 
-div[id="survey_form"] .modal-dialog {
+div[id="survey"] .modal-dialog {
 	
 	width:100%;
 	margin:auto;
+	overflow-y:hidden;
+	max-height:50vh;
 }
 
-div[id="survey_form"] .modal-content {
-	
-
+div[id="survey"] .modal-content {
     background-color: #ffffff;
-
-
 }
-div[id="survey_form"] .modal-header, .modal-footer {
+div[id="survey"] .modal-header, .modal-footer {
 
 	background-color: #eee;
-
 }
 
 /* The Next Button */
-div[id="survey_form"] .modal-footer button {
-    /*color: white;*/
+div[id="survey"] .modal-footer button {
+
 	color: black;
     float: right;
 	border: none;
     font-size: 28px;
 	background-color: transparent
 }
+div[id="survey"] .modal-footer {
+	
+	padding-bottom: 0px;
+    padding-top: 0px;
+}
 
-div[id="survey_form"] .modal-footer button .glyphicon {
+div[id="survey"] .modal-footer button .glyphicon {
 	vertical-align:text-top;
 }
 
@@ -43,3 +47,16 @@ div[id="survey_form"] .modal-footer button .glyphicon {
 	width: 60%;
 	margin: 0px auto;
 }
+.vjs-fullscreen-control {
+	/*display:none !important;*/
+}
+
+
+div[id="survey"] .modal-body{
+	overflow-y:auto !important;
+}
+
+div[id="survey"] #myModal {
+	padding:0px !important;
+}
+

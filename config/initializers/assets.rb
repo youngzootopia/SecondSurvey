@@ -30,6 +30,7 @@ Rails.application.config.assets.precompile += %w( custom/jquery.rateyo.min.css )
 Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
 # JavaScript
 Rails.application.config.assets.precompile += %w( custom/jquery-3.1.1.js )
+Rails.application.config.assets.precompile += %w( custom/jquery-3.1.1.min.js )
 Rails.application.config.assets.precompile += %w( custom/bootstrap/js/bootstrap.min.js )
 Rails.application.config.assets.precompile += %w( custom/jquery-ui-1.12.1.custom/jquery-ui.js )
   # for signup, manage user

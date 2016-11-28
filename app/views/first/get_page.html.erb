@@ -18,44 +18,46 @@
   </div>
   <!--loading bar end-->
   
-  <!--video section-->
-  <div class="col-xs-12 col-lg-6 col-centered" id="video_form" style="display:none;">
-	<video id="video" class="video-js vjs-default-skin vjs-big-play-centered   vjs-16-9" 
-		   data-setup='{"autoplay":false,"controls": true,"preload": "auto",
-		   "inactivityTimeout": 0,"language":"ko","loop": false}'>
-	  <!--<source src="" type='video/mp4'>-->
-	</video>
-  </div>
-  <!--video section end-->
-  
-  <!--survey section-->
-  <div class="col-xs-12 col-lg-6 col-centered" id="survey_form">
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" role="dialog">
-	  <div class="modal-dialog">
-		<!-- Modal content-->
-		<div class="modal-content">
-		  <div class="modal-header">
-			<!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
-			<h4 class="modal-title">Modal Header</h4>
+	<div id="survey">
+	  <!--video section-->
+	  <div class="col-xs-12 col-lg-6 col-centered" id="video_form" style="display:none;">
+		<video id="video" class="video-js vjs-default-skin vjs-big-play-centered   vjs-16-9" 
+			   data-setup='{"autoplay":false,"controls": true,"preload": "auto",
+			   "inactivityTimeout": 0,"language":"ko","loop": false}'>
+		  <!--<source src="" type='video/mp4'>-->
+		</video>
+	  </div>
+	  <!--video section end-->
+	  
+	  <!--survey section-->
+	  <div class="col-xs-12 col-lg-6 col-centered" id="survey_form" >
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+		  <div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h4 class="modal-title">Modal Header</h4>
+			  </div>
+			  <div class="modal-body">
+				<p>Some text in the modal.</p>
+				<p>Some text in the modal.</p>
+				<p>Some text in the modal.end</p>
+				<div id="rateYo"></div>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" id="next_btn" onclick="next_button();">
+					다음
+					<span class="glyphicon glyphicon-circle-arrow-right"></span>
+				</button>
+			  </div>
+			</div>
 		  </div>
-		  <div class="modal-body">
-		    <p>Some text in the modal.</p>
-			<div id="rateYo"></div>
-		  </div>
-	      <div class="modal-footer">
-		    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="next_button();">
+		</div>
+	  </div>
+	<!--survey section end-->
+	</div>
 
-				다음
-				<span class="glyphicon glyphicon-circle-arrow-right"></span>
-	
-			</button>
-	      </div>
-	    </div>
-      </div>
-    </div>
-  </div>
-<!--survey section end-->
 </div>
 
 <% content_for :tail do %>

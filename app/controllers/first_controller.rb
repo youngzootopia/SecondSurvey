@@ -25,6 +25,10 @@ class FirstController < ApplicationController
     
     # 정보 전송
     get_infomation
+    
+    # 단순히 currentShot 업데이트만 함 수정 필요.
+    @user.currentShot += 1
+    @user.save
         
     request.format = :json
     respond_to do |format|
