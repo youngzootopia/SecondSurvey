@@ -400,7 +400,7 @@ function modal_resize(){
 
 function setinner_modal(){
 	domel=videojs.createEl('ModalDialog', {
-		innerHTML: myModal.html()
+		innerHTML: survey_form.html()
 	});
 	aa=myPlayer.addChild('ModalDialog', {'el': domel});	
 	myPlayer.children()[9].hide();
