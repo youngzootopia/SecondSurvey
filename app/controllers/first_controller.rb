@@ -22,13 +22,13 @@ class FirstController < ApplicationController
   
   # 설문 결과 저장하고 정보 전송
   def survey_commit
+    # 단순히 currentShot 업데이트만 함 수정 필요.
+    @user = User.find(session[:user_id])
+    @user.currentShot += 1
+    @user.save
     
     # 정보 전송
     get_infomation
-    
-    # 단순히 currentShot 업데이트만 함 수정 필요.
-    @user.currentShot += 1
-    @user.save
         
     request.format = :json
     respond_to do |format|
@@ -51,8 +51,10 @@ class FirstController < ApplicationController
     def get_infomation
       @user = User.find(session[:user_id])
       
-      # currentShot 증가. 첫 접속이라면 1부터 시작, 그렇지 않다면 그룹만큼 증가.
-      @user.currentShot == 0 ? @user.currentShot = 1 : @user.currentShot += @user.group
+      # currentShot 증가. 첫 접속이라면 1부터 시작
+      if @user.currentShot == 0
+        @user.currentShot = 1
+      end
       
       # 마지막 샷이라면
       @lastShot = ShotInfo.last

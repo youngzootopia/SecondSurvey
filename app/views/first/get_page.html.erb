@@ -8,71 +8,111 @@
 <% provide(:title, 'First survey') %>
 <!--body start-->
 <div class="row row-centered">
-  <!--loading bar-->
-  <div class="col-xs-12 col-centered">
-	<div class="progress" style="display:none;">
-	  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-		동영상을 받아오고 있습니다.
-	  </div>
+	<!--loading bar-->
+	<div class="col-xs-12 col-centered">
+		<div class="progress" style="display:none;">
+			<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+				동영상을 받아오고 있습니다.
+			</div>
+		</div>
 	</div>
-  </div>
-  <!--loading bar end-->
+	<!--loading bar end-->
   
-	<div id="survey">
-	  <!--video section-->
-	  <div class="col-xs-12 col-lg-6 col-centered" id="video_form" style="display:none;">
+	<!--download method select button-->
+	<div class="col-xs-12 col-sm-6 col-md-5 col-lg-4 col-centered" id="down_method" style="display:none;">
+		<div class="form-inline" style="text-align:center">
+			<label style="vertical-align: middle;">동영상이 끊기나요?</label>
+			<div class="btn-group" id="method_btn" data-toggle="buttons" style="display:none;">
+				<div class="btn-group">
+					<label class="btn btn-default" onclick="device.type='touch';get_survey_info();">
+						<label for="touch">끊겨요</label><input type="radio" value="touch" checked="checked" id="touch">
+					</label>
+				</div>
+				<div class="btn-group">
+					<label class="btn btn-default active" onclick="device.type='pc';get_survey_info();">
+						<label for="pc">잘 돼요</label><input type="radio" value="pc"id="pc">
+					</label>									
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix" style="margin-top:3px;"></div>
+	<!--download method select button-->
+  
+	<!--video section-->
+	<div class="col-xs-12 col-lg-6 col-centered" id="video_form" style="display:none;">
 		<video id="video" class="video-js vjs-default-skin vjs-big-play-centered   vjs-16-9" 
-			   data-setup='{"autoplay":false,"controls": true,"preload": "auto",
-			   "inactivityTimeout": 0,"language":"ko","loop": false}'>
-		  <!--<source src="" type='video/mp4'>-->
+			data-setup='{"autoplay":false,"controls": true,"preload": "auto",
+			"inactivityTimeout": 0,"language":"ko","loop": false}'>
+		<!--<source src="" type='video/mp4'>-->
 		</video>
-	  </div>
-	  <!--video section end-->
-	  
-	  <!--survey section-->
-	  <div class="col-xs-12 col-lg-6 col-centered" id="survey_form" >
+	</div>
+	<!--video section end-->
+  
+	<!--survey section-->
+	<div class="col-xs-12 col-lg-6 col-centered" id="survey_form" >
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" role="dialog">
-		  <div class="modal-dialog">
-			<!-- Modal content-->
-			<div class="modal-content">
-			  <div class="modal-header">
-				<h4 class="modal-title">Modal Header</h4>
-			  </div>
-			  <div class="modal-body">
-				<p>Some text in the modal.</p>
-				<p>Some text in the modal.</p>
-				<p>Some text in the modal.end</p>
-				<div id="rateYo"></div>
-			  </div>
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-default" id="next_btn" onclick="next_button();">
-					다음
-					<span class="glyphicon glyphicon-circle-arrow-right"></span>
-				</button>
-			  </div>
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Modal Header</h4>
+					</div>
+					<div class="modal-body">
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						<p>Some text in the modal.</p>
+						
+						
+						<p>Some text in the modal.end</p>
+						<div id="rateYo"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" id="next_btn" onclick="next_button();">
+							다음
+							<span class="glyphicon glyphicon-circle-arrow-right"></span>
+						</button>
+					</div>
+				</div>
 			</div>
-		  </div>
 		</div>
-	  </div>
-	<!--survey section end-->
 	</div>
-
+	<!--survey section end-->
 </div>
+<!--body end-->
 
 <% content_for :tail do %>
-  <%= javascript_include_tag 'custom/video_js/video', 'custom/video_control_2', 'custom/jquery.rateyo.min' %>
-  <script>
-	var vid_tag_id="video";
-	var video_link="0";
-	var start_list= [0.0];
-	var end_list= [0.1];
-	var shot_id_list = [0];
-	var cid="0";
-	var filename="0";
-	var totalShot = 0;
-	var count=0;
-  </script>
-   
-   
+	<%= javascript_include_tag 'custom/video_js/video', 'custom/video_control_2', 'custom/jquery.rateyo.min' %>
+	<script>
+		var vid_tag_id="video";
+		var video_link="0";
+		var start_list= [0.0];
+		var end_list= [0.1];
+		var shot_id_list = [0];
+		var cid="0";
+		var filename="0";
+		var totalShot = 0;
+		var count=0;
+	</script>
 <% end %>
