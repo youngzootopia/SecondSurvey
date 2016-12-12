@@ -23,101 +23,143 @@ function dom_caching(){
 
 	survey_form=$('#survey_form');
 	video_form=$("#video_form");
-	progress=$(".progress");
 	myModal=$("#myModal");
-	progress_bar=$(".progress-bar");
-	myPlayer=videojs(vid_tag_id);
 	next_btn=$("#next_btn");
+	rating=$("#rateYo");
+	progress=$(".progress");
+	progress_bar=$(".progress-bar");
 	modal_dialog=$(".modal-dialog");
 	modal_body=$(".modal-body");
 	modal_header=$(".modal-header");
 	modal_footer=$(".modal-footer");
-	rating=$("#rateYo");
-	html_body=$('html, body');
+	myPlayer=videojs(vid_tag_id);
+	html_body=$('body');
 
 }
 
-$(document).ready(function() {
-		
+$(document).ready(function(){
+
 	//all dom obj caching
 	dom_caching();
-
+	
+	device.type='touch';
+	//animation speed
+	device.animation=0;
 	//is touch device?
+	
 	if(is_touch_device()) {
-		device.type='touch';
-		//animation speed
-		device.animation=0;
 		//remove fade animation
 		myModal.removeClass('fade');
-		show_loading_bar();
 	} else {
-		//set default animation
-		device.type='fast';
+		
+		$('#down_method').show();
+		$("#down_method > div[class='form-inline'] > label").click(function(e){
+				$("#method_btn").toggle();
+			}
+		);
+
+		device.type='pc';
 		device.animation='slow';
 		if(myModal.hasClass('fade')){	
 		} else{
 			myModal.addClass('fade');
 		}
-		hide_loading_bar();
 	}
-	//for fullscreen layer
-	setinner_modal();
+
+	//video setting start
+	myPlayer.ready(set_event);	
+	
+});
+
+
+function set_event() {
+	
+	this.off('ready',set_event);
+	
+	//rating in modal
+	rating.rateYo({
+		rating: 3.0,//default rating
+		numStars: 5,
+		maxValue:10,
+		halfStar: true,
+		//set min fill rate area
+		onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','10%');},
+		//set min value
+		onSet: function (value, rateYoInstance){	if(value==0){rating.rateYo("rating", 1);}	}
+	});
+	
+
+	//modal show/hide handler
+	myModal.on('shown.bs.modal',function(e){
+			//console.log(e.type);
+			modal_isopen=true;
+			modal_header_height=modal_header.outerHeight();
+			modal_footer_height=modal_footer.outerHeight();
+			modal_resize();
+			focus_modal();
+		}
+	);
+	
+	myModal.on('hide.bs.modal',function(e){
+			//console.log(e.type);
+			modal_isopen=false;
+			focus_video();
+			//window_resize();
+		}
+	);
+	//resize event handler	
+	$(window).on("resize",window_resize).resize();
+	
+	// (full screen? width:100%, xs12 lg-6)
+	myPlayer.on('fullscreenchange',function(e){
+		
+			//move survey dom
+			if(myPlayer.isFullscreen()){
+				$('#video_html5_api').after(survey_form);
+			} else{
+				video_form.after(survey_form);
+			}		
+		
+			console.log(e.type);
+			survey_form.toggleClass('col-lg-6');
+			modal_resize();
+		}
+	);
+
+	
+	//get method caching disable
+	jQuery.ajaxSetup({cache:false});
+	
+	get_survey_info();
+		
+}
+
+function get_survey_info(){
+	
+	//loading bar
+	hide_loading_bar();
+	
 	//survey
 	hide_survey();
 
 	//video
 	hide_video();
-
-	//video setting start
-	myPlayer.ready(get_info);
-
-});
-
-function get_info() {
 	
-	this.off('ready',get_info);
 	video_link=null;
+	myPlayer.pause();
 	
-	//rating in modal
-	star_rating_on();
-	
-
-	//modal show/hide handler
-	myModal.on('shown.bs.modal',function(e){
-			modal_isopen=true;
-			modal_header_height=modal_header.outerHeight();
-			modal_footer_height=modal_footer.outerHeight();
-			window_resize();
-			modal_body.animate({scrollTop : 0}, 0);
-			focus_modal();
-		}
-	);
-	
-
-	myModal.on('hidden.bs.modal',function(){
-			modal_isopen=false;
-			focus_video();
-		}
-	);
-	//resize event handler	
-	$(window).on("resize",window_resize).resize();
-
-	
-	
-	//get method caching disable
-	jQuery.ajaxSetup({cache:false});
+	console.log('my device',device.type);
 	
 	//get survey info
 	$.ajax({
-		type: 'GET',
-		url: '/get_first_infomation',
-		data: {survey: JSON.stringify('init'),},
-		dataType: 'json',
-		success: ajax_get_data,
-		error: ajax_error
-	});
-		
-
+			type: 'GET',
+			url: '/get_first_infomation',
+			data: {survey: JSON.stringify('init'),},
+			dataType: 'json',
+			success: ajax_get_data,
+			error: ajax_error
+		}
+	);
 }
 
 function ajax_get_data(data) {
@@ -138,13 +180,13 @@ function ajax_get_data(data) {
 		//처음이거나 해당 영상의 샷을 다 진행해서 다음 링크를 받은경우
 		video_link='/assets/'+data[0].videoURL;
 		start_list=data[0].startTimeList;
-					
 		end_list=data[0].endTimeList;
 		shot_id_list=data[0].shotIDList;
 		cid=data[0].CID;
 		filename=data[0].title;
 
-		init();
+		hide_survey();
+		start();
 	}	
 	data=null;
 }
@@ -157,14 +199,14 @@ function ajax_error(request, status, error ) {
 																										
 }
 
-function init() {
+function start() {
 	
 	//reset count
 	count=0;
 
 	switch(device.type) {
 		//바로시작
-		case 'fast' : fast_start(); break;
+		case 'pc' : pc_start(); break;
 		//다운로드 후 시작
 		default : nomal_start(); break;
 	}
@@ -177,7 +219,7 @@ function nomal_start() {
 
 function video_download(url){
 	
-	//show_loading_bar();
+	show_loading_bar();
 	hide_video();
 
 	var xhr = new XMLHttpRequest();
@@ -185,6 +227,7 @@ function video_download(url){
 	xhr.responseType = 'blob';
 	xhr.onload = function(e) {
 	  if (this.status == 200) {
+			//다운이 완료되면 src set
 			var myBlob = this.response;
 			//var vid = (window.webkitURL ? webkitURL : URL).createObjectURL(myBlob);
 			var vid = (window.URL).createObjectURL(myBlob);
@@ -196,17 +239,18 @@ function video_download(url){
 		}
 	}
 	xhr.onprogress = function(e) {
+		//다운받는동안 로딩바 갱신
 		if(e.lengthComputable) {
-			
 			set_loading_bar((e.loaded / e.total*100)+'%')
-			
-			if(e.loaded==e.total) {
+			if(e.loaded>=e.total) {
+				set_loading_bar('0%');
 				hide_loading_bar();
 			}
 
 		}
 	}
 	xhr.onreadystatechange= function(e) {
+		//메소드 응답
 		if(xhr.readyState==4) {
 			//응답을 받음
 			if(xhr.status==404) {
@@ -227,7 +271,7 @@ function video_download(url){
 	xhr.send();	
 }
 
-function fast_start(){
+function pc_start(){
 	
 	myPlayer.src(video_link);
 
@@ -326,13 +370,7 @@ function show_survey() {
 
 	video_form.css("float","left");
 	
-	if(myPlayer.isFullscreen()){
-		myPlayer.children()[9].show();;	
-	} else{
-		myModal.modal("show",device.animation);	
-	}
-	
-	
+	myModal.modal("show",device.animation,{backdrop: true});
 	
 	next_btn.prop('disabled',false);
 }
@@ -342,18 +380,6 @@ function hide_survey() {
 	survey_form.hide();
 	video_form.css("float","none");
 	myModal.modal("hide");
-	myPlayer.children()[9].hide();	
-}
-
-
-
-function star_rating_on() {
-	rating.rateYo({
-		rating: 3.0,//default rating
-		numStars: 5,
-		maxValue:10,
-		halfStar: true
-	});	 
 }
 
 function is_touch_device() {
@@ -364,11 +390,11 @@ function is_touch_device() {
 
 function window_resize(e){
 
+	if(e){console.log(e.type);};
 	//screen height renewal
 	window_height=this.innerHeight;
 	if(modal_isopen){
 		modal_resize();//modal resize
-
 		focus_modal();//scroll to modal	
 	} else{
 		//scroll to video
@@ -389,22 +415,16 @@ function modal_resize(){
 	var body_height=null;
 	var extra=modal_header_height + modal_footer_height;
 	
-	if(device.type=='fast'){
+	if(device.animation=='slow'){
 		dialog_height/=2;
 	}
+	//body=modal-header-footer
 	body_height=dialog_height - extra;
 	
 	modal_dialog.css('max-height',dialog_height);
 	modal_body.css('max-height',body_height);
 }
 
-function setinner_modal(){
-	domel=videojs.createEl('ModalDialog', {
-		innerHTML: survey_form.html()
-	});
-	aa=myPlayer.addChild('ModalDialog', {'el': domel});	
-	myPlayer.children()[9].hide();
-}
 
 
 

@@ -26,8 +26,8 @@ class UsersController < ApplicationController
     # 아래의 user_params 함수를 호출해 HTML form 데이터의 유효성 검사를 진행하고 정상이라면  
     @user = User.new(user_params)
     
-    # 처음 가입하는 유저는 currentShot이 0으로 초기화
-    @user.currentShot = 0
+    # 처음 가입하는 유저는 currentShot이 1으로 초기화
+    @user.currentShot = 1
     
     # group 구분 해야 함. 확실하지 않기 때문에 일단 1로 할당
     @user.group = 1
