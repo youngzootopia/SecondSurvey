@@ -24,13 +24,13 @@
 			<label style="vertical-align: middle;">동영상이 끊기나요?</label>
 			<div class="btn-group" id="method_btn" data-toggle="buttons" style="display:none;">
 				<div class="btn-group">
-					<label class="btn btn-default" onclick="device.type='touch';get_survey_info();">
-						<label for="touch">끊겨요</label><input type="radio" value="touch" checked="checked" id="touch">
+					<label class="btn btn-default" id="touch" >
+						<label for="touch">끊겨요</label><input type="radio" value="touch" checked="checked" >
 					</label>
 				</div>
 				<div class="btn-group">
-					<label class="btn btn-default active" onclick="device.type='pc';get_survey_info();">
-						<label for="pc">잘 돼요</label><input type="radio" value="pc"id="pc">
+					<label class="btn btn-default active" id="pc" >
+						<label for="pc">잘 돼요</label><input type="radio" value="pc">
 					</label>									
 				</div>
 			</div>
@@ -89,7 +89,7 @@
 						<div id="rateYo"></div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" id="next_btn" onclick="next_button();">
+						<button type="button" class="btn btn-default" id="next_btn">
 							다음
 							<span class="glyphicon glyphicon-circle-arrow-right"></span>
 						</button>

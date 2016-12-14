@@ -39,10 +39,6 @@
 }
 
 
-#video_form, #survey_form {
-	float:left;
-}
-
 /*responsive margin*/
 @media screen and (max-width: 768px) {
 	#myNavbar {
@@ -60,3 +56,16 @@ body > div[class="container"], body > div[class="container-fluid"] {
 	min-width:250px !important;
 }
 
+#survey_form {
+	float:none;
+}
+/*responsive margin*/
+@media screen and (min-width: 1200px) {
+	#survey_form {
+		float:right;
+	}
+}
+
+body {
+	margin-bottom:5px;
+}
