@@ -1,5 +1,5 @@
 var html_body=null;
-var device= null;
+var device= {type:'touch',animation:0};
 
 function Class_ProgressBar(){
 	var progress=$(".progress");
@@ -439,7 +439,6 @@ function Class_SurveyForm(){
 $(document).ready(function(){
 	
 	console.log('ready');
-	device= {type:'touch',animation:0};
 	html_body=$('html, body');
 	survey_form=new Class_SurveyForm();
 	survey_form.get_survey_info();
