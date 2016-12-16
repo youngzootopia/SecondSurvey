@@ -56,8 +56,39 @@ class FirstController < ApplicationController
     else # first_survey 저장 실패
       render 'get_json'
     end
+  end
+  
+  # ADMIN
+  # 1차 설문 리스트 보기
+  def index
+    @first_surveys = FirstSurvey.all
+  end
+
+  # 1차 설문 수정
+  def edit
+    @first_survey = FirstSurvey.find(params[:id])
+  end
+
+  def update
+    @first_survey = FirstSurvey.find(params[:id])
     
-    
+    respond_to do |format|
+      if @first_survey.update(first_params)
+        format.html { redirect_to "/admin/first", notice: "#{@first_survey.sUserID}의 ID = #{@first_survey.id} 1차 설문이 정상적으로 수정되었습니다." }
+      else
+        format.html { render :edit }
+      end
+    end
+  end
+
+  # 1차 설문 삭제
+  def destroy
+    @first_survey = FirstSurvey.find(params[:id])
+    @sUserID = @first_survey.sUserID
+    @first_survey.destroy
+    respond_to do |format|
+      format.html { redirect_to "/admin/first", notice: "#{@sUserID}의 ID = #{params[:id]} 1차 설문이 정상적으로 삭제되었습니다." }
+    end
   end
   
   private
@@ -113,5 +144,10 @@ class FirstController < ApplicationController
       # CID, 동영상 제목
       @CID = @video.CID
       @title = @video.ProgramNameKor
+    end
+    
+    # 1차 설문 form 파라미터들
+    def first_params
+      params.require(:first_survey).permit(:preference, :reason)
     end
 end

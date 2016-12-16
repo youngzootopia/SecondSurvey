@@ -67,13 +67,6 @@
 						
 						<p>Some text in the modal.end</p>
 						
-						<%= form_for(@first_survey, url: get_first_infomation_path, :html => {name: 'first_survey'}) do |f| %>
-					      <%= f.hidden_field :cID, class: 'form-control' %>
-					      <%= f.hidden_field :shotID, class: 'form-control' %>
-					      <%= f.hidden_field :fileName, class: 'form-control' %>
-					      <%= f.hidden_field :preference, class: 'form-control' %>
-					      <%= f.hidden_field :reason, class: 'form-control' %>
-				    	<% end %>
 						<div id="rateYo"></div>
 					</div>
 					<div class="modal-footer">

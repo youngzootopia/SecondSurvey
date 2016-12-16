@@ -78,8 +78,8 @@ class FilteringsController < ApplicationController
       params.require(:filtering).permit(:serviceProvider, :degree, :price)
     end
     
-  # filtering form 파라미터들
-      def admin_add_params
-        params.require(:filtering).permit(:sUserID, :serviceProvider, :degree, :price)
-      end
+    # filtering form 파라미터들
+    def admin_add_params
+      params.require(:filtering).permit(:sUserID, :serviceProvider, :degree, :price)
+    end
 end
