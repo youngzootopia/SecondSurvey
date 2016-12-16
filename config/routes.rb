@@ -50,4 +50,7 @@ Rails.application.routes.draw do
   get	 '/first',				            				 to: 'first#get_page'
   get	 '/get_first_infomation',     				 to: 'first#get_json'
   post '/get_first_infomation',	      			 to: 'first#survey_commit'
+  
+  # 2차 설문
+  get  '/second',                            to: 'second#get_page'
 end
