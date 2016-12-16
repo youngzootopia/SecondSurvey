@@ -8,6 +8,8 @@ class FirstController < ApplicationController
     unless Filtering.exists? @user.sUserID
       redirect_to "/filtering" 
     end
+    
+    @first_survey = FirstSurvey.new
   end
   
   # 정보 요청할 떄
@@ -22,18 +24,40 @@ class FirstController < ApplicationController
   
   # 설문 결과 저장하고 정보 전송
   def survey_commit
-    # 단순히 currentShot 업데이트만 함 수정 필요.
+    # 아이디 가져오고
     @user = User.find(session[:user_id])
-    @user.currentShot += 1
-    @user.save
     
-    # 정보 전송
-    get_infomation
-        
-    request.format = :json
-    respond_to do |format|
-    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title] }
+    # form 데이터 받아오고 아이디 추가
+    @first = FirstSurvey.new
+    @data = JSON.parse(params[:survey])
+    @first.cID = @data["cID"]
+    @first.shotID = @data["shotID"]
+    @first.fileName = @data["fileName"]
+    @first.preference = @data["preference"]
+    @first.reason = @data["reason"]
+    @first.timestamp = Time.now
+    @first.sUserID = @user.sUserID
+       
+    if @first.save # 데이터베이스에 잘 저장 되었다면
+      # currentShot 증가
+      @user.currentShot += @user.group
+      if @user.save # 데이터베이스에 잘 저장 되었다면
+        # 정보 전송
+        get_infomation
+              
+        request.format = :json
+        respond_to do |format|
+        format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title] }
+        end
+      else # user 저장 실패
+        render 'get_json'
+      end
+      
+    else # first_survey 저장 실패
+      render 'get_json'
     end
+    
+    
   end
   
   private

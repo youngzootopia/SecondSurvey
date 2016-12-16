@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161109012713) do
+ActiveRecord::Schema.define(version: 20161214073921) do
 
   create_table "clists", primary_key: "CID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Category"
@@ -28,9 +28,24 @@ ActiveRecord::Schema.define(version: 20161109012713) do
   end
 
   create_table "filterings", primary_key: "sUserID", id: :string, default: "", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string "serviceProvider"
-    t.string "degree"
-    t.string "price"
+    t.string  "serviceProvider"
+    t.integer "degree"
+    t.integer "price"
+  end
+
+  create_table "first_surveys", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "cID"
+    t.integer  "shotID"
+    t.datetime "timestamp"
+    t.string   "fileName"
+    t.float    "preference", limit: 24
+    t.string   "reason"
+    t.string   "sUserID",    limit: 20, null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.index ["cID"], name: "fk_cID_from_clists_first", using: :btree
+    t.index ["sUserID"], name: "fk_sUserID_from_users_first", using: :btree
+    t.index ["shotID"], name: "fk_shotID_from_shot_infos_first", using: :btree
   end
 
   create_table "shot_infos", primary_key: "ShotID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -60,5 +75,8 @@ ActiveRecord::Schema.define(version: 20161109012713) do
   end
 
   add_foreign_key "filterings", "users", column: "sUserID", primary_key: "sUserID", name: "fk_sUserID_from_users", on_delete: :cascade
+  add_foreign_key "first_surveys", "clists", column: "cID", primary_key: "CID", name: "fk_cID_from_clists_first", on_delete: :cascade
+  add_foreign_key "first_surveys", "shot_infos", column: "shotID", primary_key: "ShotID", name: "fk_shotID_from_shot_infos_first", on_delete: :cascade
+  add_foreign_key "first_surveys", "users", column: "sUserID", primary_key: "sUserID", name: "fk_sUserID_from_users_first", on_delete: :cascade
   add_foreign_key "shot_infos", "clists", column: "CID", primary_key: "CID", name: "fk_CID_from_clist", on_delete: :cascade
 end

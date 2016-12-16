@@ -92,7 +92,7 @@ function Class_Modal(vid){
 		rating.rateYo({
 			rating: 3.0,//default rating
 			numStars: 5,
-			maxValue:10,
+			maxValue:5,
 			halfStar: true,
 			//set min fill rate area
 			onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','10%');},
@@ -393,11 +393,11 @@ function Class_SurveyForm(){
 				
 				var survey = new Object();
 	
-				survey.cid=cid;
-				survey.filename=filename;
-				survey.shot_id=shot_id_list[count];
-				survey.comment='good';
-				survey.ratinng= myModal.get_rating();
+				survey.cID=cid;
+				survey.fileName=filename;
+				survey.shotID=shot_id_list[count];
+				survey.reason='good';
+				survey.preference= myModal.get_rating();
 				survey.time=end_list[count];				
 				$.ajax(
 					{	
