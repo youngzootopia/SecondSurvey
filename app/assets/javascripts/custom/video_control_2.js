@@ -43,6 +43,8 @@ function Class_Modal(vid){
 	var modal_header=$(".modal-header");
 	var modal_footer=$(".modal-footer");
 	var rating=$("#rateYo");
+	var persent=$("#persent");
+	var reason=$("textarea#id_reason");
 	var open_state=false;
 	var header_height=56;
 	var footer_height=53;
@@ -51,6 +53,12 @@ function Class_Modal(vid){
 	this.get_rating=function(){
 		return rating.rateYo('rating');
 	};
+	this.get_reason=function(){
+		return reason.val();
+	};
+	this.set_persent=function(current){
+		persent.text((current/totalShot*100).toFixed(2)+'%');
+	}
 	this.show_modal=function(){
 		myModal.modal("show",device.animation,{backdrop: true});
 	};
@@ -233,11 +241,13 @@ function Class_SurveyForm(){
 			shot_id_list=data[0].shotIDList;
 			cid=data[0].CID;
 			filename=data[0].title;
+			totalShot=data[0].totalShot;
 
 			hide_survey();
 			//console.log('start');
 			start();
-		}	
+		}
+		myModal.set_persent(shot_id_list[count]);
 		data=null;
 	
 	};
@@ -396,9 +406,10 @@ function Class_SurveyForm(){
 				survey.cID=cid;
 				survey.fileName=filename;
 				survey.shotID=shot_id_list[count];
-				survey.reason='good';
+				survey.reason=myModal.get_reason();
 				survey.preference= myModal.get_rating();
-				survey.time=end_list[count];				
+				//survey.time=end_list[count];
+				
 				$.ajax(
 					{	
 						type: 'POST',
