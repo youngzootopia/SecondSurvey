@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   post '/admin/first/edit:id',               to: 'first#update'
   get  '/admin/first/delete',                to: 'first#destroy'
   
-  
+  #--------------------------------------------------------------------------
   # 회원가입, 정보 수정(비밀번호 포함), 로그인-아웃, 필터링 정보 수집 
   get	 '/signup',					            			 to: 'users#new'
   post '/signup',				             				 to: 'users#create'
@@ -53,4 +53,6 @@ Rails.application.routes.draw do
   
   # 2차 설문
   get  '/second',                            to: 'second#get_page'
+  get  '/get_second_infomation',             to: 'second#get_json'
+  post '/get_second_infomation',             to: 'second#survey_commit'
 end

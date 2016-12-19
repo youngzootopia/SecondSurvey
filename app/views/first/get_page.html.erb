@@ -56,21 +56,21 @@
 			<div class="modal-dialog">
 				<!-- Modal content-->
 				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">Modal Header</h4>
+					<div class="modal-header" style="text-align: center;">
+						<h4 class="modal-title" >시청한 장면의 감상을 써 주세요!</h4>
+						<span id="persent">11</span>
 					</div>
 					<div class="modal-body">
-						<p>Some text in the modal.</p>
-						<p>Some text in the modal.</p>
-						<p>Some text in the modal.</p>
-						<p>Some text in the modal.</p>						
-						
-						<p>Some text in the modal.end</p>
-
 						<div class="form-inline">
 							<label for="rateYo1">선호도:</label>
-							<div id="rateYo" style="display:inline-block; vertical-align: middle;"></div>
+							<div id="rateYo" style="display:inline-block; margin-left:10px; vertical-align: middle;"></div>
 						</div>
+						<div class="form-inline">
+							<label for="id_reason">선호 사유:</label>
+							<textarea class="form-control" rows="5" style="width:100%;"
+							id="id_reason" required="true" style="width:100%; display:inline-block;" 
+							placeholder="색조, 화질, 영상길이 등 마음에 들거나 그렇지 않은 이유를 써주세요."></textarea>
+						</div>						
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" id="next_btn">
@@ -96,7 +96,7 @@
 		var shot_id_list = [0];
 		var cid="0";
 		var filename="0";
-		var totalShot = 0;
+		var totalShot = 9000;
 		var count=0;
 	</script>
 <% end %>

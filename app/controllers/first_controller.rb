@@ -18,7 +18,7 @@ class FirstController < ApplicationController
     
     request.format = :json
     respond_to do |format|
-    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title] }
+    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: @lastShot.ShotID] }
     end
   end
   
@@ -47,7 +47,7 @@ class FirstController < ApplicationController
               
         request.format = :json
         respond_to do |format|
-        format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title] }
+        format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: @lastShot.ShotID] }
         end
       else # user 저장 실패
         render 'get_json'
