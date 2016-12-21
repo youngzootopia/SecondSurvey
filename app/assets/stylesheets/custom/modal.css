@@ -70,4 +70,13 @@ div[id="survey_form"] .modal-body{
 div[id="survey_form"] #myModal {
 	padding:0px !important;
 }
+.thumbnails li img{
+    width: 100px;
+	height: 100px;
+}
 
+
+div[class="thumbnail selected"] img{
+    width: 100%;
+	height: 100%;	
+}

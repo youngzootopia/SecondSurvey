@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :first_query_tags
+  resources :first_queries
   root :to => 'sessions#new'
 
   resources :shot_infos
@@ -53,6 +55,6 @@ Rails.application.routes.draw do
   
   # 2차 설문
   get  '/second',                            to: 'second#get_page'
-  get  '/get_second_infomation',             to: 'second#get_json'
+  get  '/get_second_infomation_first',       to: 'second#get_first_json'
   post '/get_second_infomation',             to: 'second#survey_commit'
 end

@@ -1,0 +1,1 @@
+json.partial! "first_query_tags/first_query_tag", first_query_tag: @first_query_tag

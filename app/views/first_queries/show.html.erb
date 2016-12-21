@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Suserid:</strong>
+  <%= @first_query.sUserID %>
+</p>
+
+<p>
+  <strong>Queryid:</strong>
+  <%= @first_query.queryID %>
+</p>
+
+<p>
+  <strong>Query:</strong>
+  <%= @first_query.query %>
+</p>
+
+<%= link_to 'Edit', edit_first_query_path(@first_query) %> |
+<%= link_to 'Back', first_queries_path %>
