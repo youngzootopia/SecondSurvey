@@ -1,1 +1,0 @@
-json.array! @shot_infos, partial: 'shot_infos/shot_info', as: :shot_info

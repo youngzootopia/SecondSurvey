@@ -390,7 +390,8 @@ function Class_SurveyForm(){
 						AUDIO:$("input[list=Audio]").val(),
 						type:'json'
 					};
-					str = jQuery.param( params );
+					//str = jQuery.param( params );
+					str=JSON.stringify(params);
 					break;
 				}
 			case 'query_1': {

@@ -1,1 +1,0 @@
-json.partial! "shot_infos/shot_info", shot_info: @shot_info

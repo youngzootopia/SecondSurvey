@@ -1,1 +1,0 @@
-json.array! @first_query_tags, partial: 'first_query_tags/first_query_tag', as: :first_query_tag

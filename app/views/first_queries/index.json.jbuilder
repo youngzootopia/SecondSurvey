@@ -1,1 +1,0 @@
-json.array! @first_queries, partial: 'first_queries/first_query', as: :first_query
