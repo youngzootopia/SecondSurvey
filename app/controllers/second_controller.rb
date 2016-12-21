@@ -12,6 +12,7 @@ class SecondController < ApplicationController
     end
   end
   
+  #-------------------------- 1차 쿼리
   # 1차 쿼리 정보 요청할 떄
   def get_first_json
     first
@@ -22,22 +23,85 @@ class SecondController < ApplicationController
     end
   end
   
-  # 설문 결과 저장하고 정보 전송
-  def survey_commit
+  # 1차 쿼리 저장하고 2차 쿼리로 넘어감
+  def first_commit
 
   end
   
+  #-------------------------- 2차 쿼리
+  # 2차 쿼리 정보 요청할 떄
+  def get_second_json
+    second
+    
+    request.format = :json
+    respond_to do |format|
+    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURLList: @videoURLList, totalScoreList: @totalScoreList, thumbList: @thumbList, queryIDList: @queryIDList] }
+    end
+  end
+  
+  # 2차 쿼리 저장하고 다시 2차 설문으로 넘어감
+  def second_commit
+  
+  end
+  
+  #------------------------ ADMIN
+  #------------------------ 1차 쿼리
+  # for first_quries 테이블. 삭제는 가능하나 수정은 불가능함. ETRI에서 주는 데이터가 있기 때문
+  # 1차 쿼리 리스트 보기
+  def first_index
+    @firstQueries = FirstQuery.all
+  end
+  # 1차 쿼리 삭제
+  def first_destroy
+    @firstQuery = FirstQuery.find(params[:queryID])
+    @sUserID = @firstQuery.sUserID
+    @firstQuery.destroy
+    respond_to do |format|
+      format.html { redirect_to "/admin/first_query", notice: "#{@sUserID}의 queryID = #{params[:queryID]} 1차 쿼리가 정상적으로 삭제되었습니다." }
+    end
+  end
+  # for first_query_tags 테이블. 삭제, 수정 모두 불가능함. 삭제하고 싶다면 1차 쿼리 리스트에서 같은 queryID를 삭제
+  # 1차 쿼리 태그 리스트 보기
+  def first_tag_index
+    @tags = FirstQueryTag.all
+  end
+  
+  #------------------------ 2차 쿼리
+  # for second_quries 테이블
+  # 2차 쿼리 리스트 보기
+  def second_index
+    @secondQueries = SecondQuery.all
+  end
+  # 2차 쿼리 삭제
+  def second_destroy
+    @secondQuery = SecondQuery.find(params[:queryID])
+    @sUserID = @secondQuery.sUserID
+    @secondQuery.destroy
+    respond_to do |format|
+      format.html { redirect_to "/admin/second_query", notice: "#{@sUserID}의 queryID = #{params[:queryID]} 2차 쿼리가 정상적으로 삭제되었습니다." }
+    end
+  end
+
+  
   private
-    # 1차 쿼리 http 통신하기.
+    # 1차 쿼리
     def first
       # First_Queries 데이터 추가
       @firstQuery = FirstQuery.new
       @firstQuery.sUserID = session[:user_id]
-      request.GET.delete :type
-      @firstQuery.query = request.GET
+      @query = JSON.parse request.GET[:data]
+      # "type" => "json" 제거
+      @query.delete("type")
+      # value가 ""(공백)인 값 제거
+      @firstQuery.query = @query.reject { |key, value| value.empty? }
+        
       if @firstQuery.save # 데이터베이스에 잘 저장 되었다면
         # response 만들기
         get_query_data
+        
+        @queryIDList = Array.new
+        @queryIDList.push @firstQuery.queryID
+        @queryIDList.push @firstQuery.queryID
         
         # for문 돌려야 함.
         @firstQueryTag = FirstQueryTag.new
@@ -55,9 +119,41 @@ class SecondController < ApplicationController
       end
     end
     
+    # 2차 쿼리
+    def second
+      # Second_Queries 데이터 추가
+      @secondQuery = SecondQuery.new
+      @secondQuery.sUserID = session[:user_id]
+      request.GET.delete :type
+      @secondQuery.query = request.GET
+      if @secondQuery.save # 데이터베이스에 잘 저장 되었다면
+        # response 만들기
+        get_query_data
+        
+        @queryIDList = Array.new
+        @queryIDList.push @secondQuery.queryID
+        @queryIDList.push @secondQuery.queryID
+        
+        # for문 돌려야 함.
+        @secondQueryTag = SecondQueryTag.new
+        @secondQueryTag.queryID = @secondQuery.queryID
+        # 쿼리 받으면 수정 필요
+        @secondQueryTag.shotID = 1362
+        @secondQueryTag.tagDesc = "고양이"
+        @secondQueryTag.tagID = 2
+        @secondQueryTag.tagScore = 2
+        unless @secondQueryTag.save # 데이터베이스에 저장 실패할 경우 다시 1차 쿼리 페이지
+          render 'get_page'
+        end
+      else # 데이터베이스에 저장 실패할 경우 다시 1차 쿼리 페이지
+        render 'get_page'
+      end
+    end
+    
+    # 1, 2차 쿼리 http(다이스트) 통신하기!
     def get_query_data
       # request.GET 파싱 필요!!
-      url = URI.parse("http://58.72.188.33:8080/lod/search.do?MAXSHOT=10" + "&type=json")
+      url = URI.parse("http://58.72.188.33:8080/lod/search.do?" + request.GET[:data] + "&type=json")
       req = Net::HTTP::Get.new(url.to_s)
       @res = Net::HTTP.start(url.host, url.port) {|http|
         http.request(req)
@@ -84,8 +180,5 @@ class SecondController < ApplicationController
       @thumbList = Array.new
       @thumbList.push "thumb/582.jpg"
       @thumbList.push "thumb/674.jpg"
-      @queryIDList = Array.new
-      @queryIDList.push @firstQuery.queryID
-      @queryIDList.push @firstQuery.queryID
     end
 end

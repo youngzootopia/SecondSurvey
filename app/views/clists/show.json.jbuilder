@@ -1,1 +1,0 @@
-json.partial! "clists/clist", clist: @clist

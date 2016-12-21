@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :second_query_tags
+  resources :second_queries
   resources :first_query_tags
   resources :first_queries
   root :to => 'sessions#new'
@@ -34,6 +36,16 @@ Rails.application.routes.draw do
   post '/admin/first/edit:id',               to: 'first#update'
   get  '/admin/first/delete',                to: 'first#destroy'
   
+  # 2차 설문조사 관리
+  # 1차 쿼리
+  get  '/admin/first_query',                 to: 'second#first_index'
+  get  '/admin/first_query/delete',          to: 'second#first_destroy'
+  get  '/admin/first_query_tag',             to: 'second#first_tag_index'
+  # 2차 쿼리
+  get  '/admin/second_query',                to: 'second#second_index'
+  get  '/admin/second_query/delete',         to: 'second#second_destroy'
+  get  '/admin/second_query_tag',            to: 'second#second_tag_index'
+  
   #--------------------------------------------------------------------------
   # 회원가입, 정보 수정(비밀번호 포함), 로그인-아웃, 필터링 정보 수집 
   get	 '/signup',					            			 to: 'users#new'
@@ -56,5 +68,7 @@ Rails.application.routes.draw do
   # 2차 설문
   get  '/second',                            to: 'second#get_page'
   get  '/get_second_infomation_first',       to: 'second#get_first_json'
-  post '/get_second_infomation',             to: 'second#survey_commit'
+  post '/get_second_infomation_first',       to: 'second#first_commit'
+  get  '/get_second_infomation_second',      to: 'second#get_second_json'
+  post '/get_second_infomation_second',      to: 'second#second_commit'
 end

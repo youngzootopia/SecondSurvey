@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161219081219) do
+ActiveRecord::Schema.define(version: 20161221005709) do
 
   create_table "clists", primary_key: "CID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Category"
@@ -67,6 +67,25 @@ ActiveRecord::Schema.define(version: 20161219081219) do
     t.index ["shotID"], name: "fk_shotID_from_shot_infos_first", using: :btree
   end
 
+  create_table "second_queries", primary_key: "queryID", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "sUserID"
+    t.string   "query"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sUserID"], name: "fk_sUserID_from_users_for_second_queries", using: :btree
+  end
+
+  create_table "second_query_tags", primary_key: ["queryID", "shotID", "tagDesc"], force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "queryID",    default: 0,  null: false
+    t.integer  "shotID",     default: 0,  null: false
+    t.string   "tagDesc",    default: "", null: false
+    t.integer  "tagID"
+    t.integer  "tagScore"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["shotID"], name: "fk_shotID_from_shot_infos_for_second_query_tags", using: :btree
+  end
+
   create_table "shot_infos", primary_key: "ShotID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "ShotNum"
     t.integer "StartFrame"
@@ -101,5 +120,8 @@ ActiveRecord::Schema.define(version: 20161219081219) do
   add_foreign_key "first_surveys", "clists", column: "cID", primary_key: "CID", name: "fk_cID_from_clists_first", on_delete: :cascade
   add_foreign_key "first_surveys", "shot_infos", column: "shotID", primary_key: "ShotID", name: "fk_shotID_from_shot_infos_first", on_delete: :cascade
   add_foreign_key "first_surveys", "users", column: "sUserID", primary_key: "sUserID", name: "fk_sUserID_from_users_first", on_delete: :cascade
+  add_foreign_key "second_queries", "users", column: "sUserID", primary_key: "sUserID", name: "fk_sUserID_from_users_for_second_queries", on_delete: :cascade
+  add_foreign_key "second_query_tags", "second_queries", column: "queryID", primary_key: "queryID", name: "fk_queryID_from_second_queries", on_delete: :cascade
+  add_foreign_key "second_query_tags", "shot_infos", column: "shotID", primary_key: "ShotID", name: "fk_shotID_from_shot_infos_for_second_query_tags", on_delete: :cascade
   add_foreign_key "shot_infos", "clists", column: "CID", primary_key: "CID", name: "fk_CID_from_clist", on_delete: :cascade
 end
