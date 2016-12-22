@@ -15,6 +15,12 @@
 	border-left: 0px;
 	border-right: 0px;
 }
+
+
+
+
+
+
 /*navation bar align center position*/
 #myNavbar {
   text-align: center;
@@ -44,6 +50,11 @@
 	#myNavbar {
 	  padding-left:0px;
 	  padding-right:0px;
+	}
+	
+	#myNavbar a {
+		padding-left:8px !important;
+		padding-right:8px !important;
 	}
 }
 

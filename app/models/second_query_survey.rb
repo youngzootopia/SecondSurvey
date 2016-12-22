@@ -1,0 +1,2 @@
+class SecondQuerySurvey < ApplicationRecord
+end

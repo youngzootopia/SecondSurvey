@@ -1,7 +1,7 @@
 class CreateShotInfos < ActiveRecord::Migration[5.0]
   def up
-    create_table(:shot_infos, :id => false) do |t|
-      t.integer :ShotID, :options => 'PRIMARY KEY'
+    create_table :shot_infos do |t|
+      t.integer :ShotID
       t.integer :ShotNum
       t.integer :StartFrame
       t.integer :EndFrame
@@ -9,7 +9,6 @@ class CreateShotInfos < ActiveRecord::Migration[5.0]
       t.integer :CID
     end
 
-    execute "ALTER TABLE shot_infos ADD PRIMARY KEY (ShotID);"
     execute "ALTER TABLE shot_infos ADD constraint fk_CID_from_clist foreign key (CID) references clists (CID) ON DELETE cascade;"
   end
   

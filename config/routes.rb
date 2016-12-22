@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :max_queries
+  resources :second_query_surveys
+  resources :first_query_surveys
   resources :second_query_tags
   resources :second_queries
   resources :first_query_tags
@@ -8,7 +11,7 @@ Rails.application.routes.draw do
   resources :shot_infos
   resources :clists
   
-  # 문의사항
+  # 진행상황 & 문의사항 페이지
   get	 '/contact',						            	 to: 'home#contact'
   
   # 관리자 페이지
@@ -37,6 +40,9 @@ Rails.application.routes.draw do
   get  '/admin/first/delete',                to: 'first#destroy'
   
   # 2차 설문조사 관리
+  # 쿼리 개수 설정
+  get  '/admin/max',                         to: 'home#max'
+  post '/admin/max',                         to: 'home#max_update'
   # 1차 쿼리
   get  '/admin/first_query',                 to: 'second#first_index'
   get  '/admin/first_query/delete',          to: 'second#first_destroy'

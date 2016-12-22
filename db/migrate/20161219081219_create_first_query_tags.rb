@@ -12,7 +12,6 @@ class CreateFirstQueryTags < ActiveRecord::Migration[5.0]
     
     execute "ALTER TABLE first_query_tags ADD PRIMARY KEY (queryID, shotID, tagDesc);"
     execute "ALTER TABLE first_query_tags ADD constraint fk_queryID_from_first_queries foreign key (queryID) references first_queries (queryID) ON DELETE cascade;"
-    execute "ALTER TABLE first_query_tags ADD constraint fk_shotID_from_shot_infos_for_first_query_tags foreign key (shotID) references shot_infos (shotID) ON DELETE cascade;"
   end
 
   def down

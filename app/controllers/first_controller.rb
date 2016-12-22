@@ -18,7 +18,7 @@ class FirstController < ApplicationController
     
     request.format = :json
     respond_to do |format|
-    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: @lastShot.ShotID] }
+    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: @lastShot.id] }
     end
   end
   
@@ -47,7 +47,7 @@ class FirstController < ApplicationController
               
         request.format = :json
         respond_to do |format|
-        format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: @lastShot.ShotID] }
+        format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: @lastShot.id] }
         end
       else # user 저장 실패
         render 'get_json'
@@ -95,6 +95,7 @@ class FirstController < ApplicationController
     # currentShot으로 샷을 셀렉트함. 특정 샷이 없을 경우 nil 반환
     def get_shot
       begin
+        # id로 찾음
         shot = ShotInfo.find(@user.currentShot)
         return shot
       rescue ActiveRecord::RecordNotFound => e
@@ -113,7 +114,9 @@ class FirstController < ApplicationController
       
       # 마지막 샷이라면
       @lastShot = ShotInfo.last
-      # render '마지막 함수' if @user.currentShot == 마지막 샷 번호
+      if @user.currentShot == @lastShot.id
+        redirect_to "/progress" 
+      end
       
       # currentShot 가져오기
       @shot = get_shot
@@ -126,16 +129,16 @@ class FirstController < ApplicationController
       @video = Clist.find(@shot.CID)
       
       # shot List 가져오기
-      @shotList = ShotInfo.where("CID = #{@video.CID} AND ShotID >= #{@user.currentShot}")
+      @shotList = ShotInfo.where("CID = #{@video.CID} AND id >= #{@user.currentShot}")
       
       # 그룹별로 해당 샷이 다르기 때문에 설문 대상 샷 번호, 시작시간, 끝시간 리스트를 만들어 줌
       @shotIDList = Array.new
       @startTimeList = Array.new
       @endTimeList = Array.new
-      @user.currentShot.step(@shotList.last.ShotID, @user.group) do |shotID|
-        @shotIDList.push shotID
-        @startTimeList.push(@shotList.find(shotID).StartFrame / @video.FPS)
-        @endTimeList.push(@shotList.find(shotID).EndFrame / @video.FPS) 
+      @user.currentShot.step(@shotList.last.id, @user.group) do |id|
+        @shotIDList.push @shotList.find(id).ShotID
+        @startTimeList.push(@shotList.find(id).StartFrame / @video.FPS)
+        @endTimeList.push(@shotList.find(id).EndFrame / @video.FPS) 
       end
       
       # 동영상 스테틱 URL 미완.
