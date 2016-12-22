@@ -6,6 +6,28 @@
 					<thead>
 						<tr>
 							<th>
+								<span class="glyphicon glyphicon-check" style="vertical-align:text-top;"></span>
+								1차 설문 :
+							</th>
+							<th colspan="2">
+								<%= (@user.currentShot / @lastShot.id.to_f * 100).round(2) %> % 완료
+							</th>
+						<tr>
+						
+						<tr>
+							<th>
+								<span class="glyphicon glyphicon-check" style="vertical-align:text-top;"></span>
+								2차 설문 :
+							</th>
+							<th colspan="2">
+								<%= @user.querys %> 개
+							</th>
+						<tr>
+					</thead>
+					<tbody></tbody>
+					<thead>
+						<tr>
+							<th>
 								설문조사 관련
 							</th>
 							<th>

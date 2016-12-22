@@ -4,15 +4,9 @@ class UsersController < ApplicationController
     # 로그인한 유저는 회원가입을 할 수 없기 때문에
     if logged_in? # 이미 로그인 했다면
       @user = User.find(session[:user_id]) # SELECT * FROM users WHERE sUserID = 로그인 세션의 유저 아이디
-      unless Filtering.exists? @user.sUserID # 필터링조사를 하지 않았다면
-        # 필터링조사 페이지로
-        @filtering = Filtering.new
-        render :controller_name => :filterings, :action_name => :new, :template => "filterings/new"
-        
-      else
-        # 진행상황 나오면 수정 필요 
-        render :controller_name => :first, :action_name => :get_page, :template => "first/get_page"
-      end
+      
+      # 진행상황&문의 페이지로
+      redirect_to "/contact"
       
     else # 로그인 하지 않은 경우 정상적으로 회원가입 페이지
       @user = User.new
@@ -26,9 +20,9 @@ class UsersController < ApplicationController
     # 아래의 user_params 함수를 호출해 HTML form 데이터의 유효성 검사를 진행하고 정상이라면  
     @user = User.new(user_params)
     
-    # 처음 가입하는 유저는 currentShot, querys를 1로 초기화
+    # 처음 가입하는 유저는 currentShot는 1, querys는 0으로 초기화
     @user.currentShot = 1
-    @user.querys = 1
+    @user.querys = 0
     
     # group 구분 해야 함. 확실하지 않기 때문에 일단 1로 할당
     @user.group = 1
@@ -38,8 +32,8 @@ class UsersController < ApplicationController
     
     if @user.save # 데이터베이스에 잘 저장 되었다면
       log_in @user # 자동으로 로그인
-      # 진행상황 나오면 수정 필요 
-      render :controller_name => :first, :action_name => :get_page, :template => "first/get_page"
+      # 진행상황&문의 페이지로
+      redirect_to "/contact"
     else # 데이터베이스에 저장 실패할 경우 다시 회원가입 페이지
       render 'new'
     end
@@ -150,14 +144,12 @@ class UsersController < ApplicationController
     # ADMIN
     # 관리자 수정 form 파라미터들
     def admin_update_params
-      # 2차 설문 추가 필요
       params[:user][:phone].gsub!('-', '')
       params.require(:user).permit(:sUserID, :name, :birthday, :phone, :sex, :married, :children, :job, :company, :hobby, :currentShot, :querys, :group)
     end
     
     # 관리자 추가 form 파라미터들
     def admin_user_params
-      # 2차 설문 추가 필요
       params.require(:user).permit(:sUserID, :name, :password, :password_confirmation, :birthday, :phone, :sex, :married, :children, :job, :company, :hobby, :currentShot, :querys, :group)
     end
 end

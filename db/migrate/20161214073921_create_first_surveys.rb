@@ -14,7 +14,6 @@ class CreateFirstSurveys < ActiveRecord::Migration[5.0]
     
     execute "ALTER TABLE first_surveys ADD constraint fk_sUserID_from_users_first foreign key (sUserID) references users (sUserID) ON DELETE cascade;"
     execute "ALTER TABLE first_surveys ADD constraint fk_cID_from_clists_first foreign key (cID) references clists (CID) ON DELETE cascade;"
-    execute "ALTER TABLE first_surveys ADD constraint fk_shotID_from_shot_infos_first foreign key (shotID) references shot_infos (ShotID) ON DELETE cascade;"
   end
   
   def down

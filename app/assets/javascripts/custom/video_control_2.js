@@ -398,6 +398,10 @@ function Class_SurveyForm(){
 		);
 		
 		next_btn.click(function(){
+				if(myModal.get_reason().length==0){
+					alert('사유를 입력해주세요');
+					return;
+				}
 				console.log('click'+count);
 				next_btn.prop('disabled',true);
 				

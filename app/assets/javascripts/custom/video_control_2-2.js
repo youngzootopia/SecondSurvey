@@ -64,11 +64,11 @@ function Class_Modal(vid){
 	this.get_rating=function(){
 		return rating.rateYo('rating');
 	};
-	this.show_rating=function(){
+	var show_rating=function(){
 		//rating.show();
 		$('div[class="form-group  rating"]').show();
 	};
-	this.hide_rating=function(){
+	var hide_rating=function(){
 		//rating.hide();
 		$('div[class="form-group  rating"]').hide();
 	};	
@@ -76,11 +76,11 @@ function Class_Modal(vid){
 	this.get_coincidence=function(){
 		return coincidence.rateYo('rating');
 	};
-	this.show_coincidence=function(){
+	var show_coincidence=function(){
 		//coincidence.show();
 		$('div[class="form-group  coincidence"]').show();
 	};
-	this.hide_coincidence=function(){
+	var hide_coincidence=function(){
 		//coincidence.hide();
 		$('div[class="form-group  coincidence"]').hide();
 	};	
@@ -88,11 +88,11 @@ function Class_Modal(vid){
 	this.get_equal=function(){
 		return equal.rateYo('rating');
 	};
-	this.show_equal=function(){
+	var show_equal=function(){
 		//equal.show();
 		$('div[class="form-group  equal"]').show();
 	};
-	this.hide_equal=function(){
+	var hide_equal=function(){
 		//equal.hide();
 		$('div[class="form-group  equal"]').hide();
 	};	
@@ -143,7 +143,7 @@ function Class_Modal(vid){
 			d.appendChild(e);
 		}
 	};
-	this.set_img=function(){
+	var set_img=function(){
 		var a = document.createElement("select");
 		a.setAttribute("class", 'image-picker show-html img_select');
 		modal_body.append(a);
@@ -156,22 +156,95 @@ function Class_Modal(vid){
 			a.appendChild(e);
 		}
 		//$("select").imagepicker();
-		$('.image-picker,.show-html').imagepicker();
+		$('.image-picker,.show-html').imagepicker({
+
+				selected: function(selected,opt,e){
+					//console.log(selected.attr('src'));
+					$('#select_img').attr('src',$('.thumbnail.selected>img').attr('src'));
+				},
+				//click
+			}
+		);
+		var x = document.createElement("IMG");
+		x.setAttribute("class", 'img_select col-xs-12');
+		x.setAttribute("id", 'select_img');
+		x.setAttribute("style", 'margin-bottom:10px');
+		//x.setAttribute("style", 'height:100%');
 		
+		modal_body.append(x);		
 		var b = document.createElement("textarea");
 		b.setAttribute("class", 'img_select');
 		b.setAttribute("id", 'select_reason');
-		b.setAttribute("style", 'width:100%');
+		b.setAttribute("style", 'width:100%; min-height:100px;');
+		b.setAttribute("placeholder", '선택한 사유를 입력해주세요');
 		modal_body.append(b);
+		
+		$('#select_img').attr('src',$('.thumbnail.selected>img').attr('src'));
+
 
 		
 	}
-	this.show_5w1h=function(){
+	this.delete_img=function(){
+		$('.img_select').remove();
+		$('.thumbnails,image_picker_selector').remove();		
+	};
+	var show_5w1h=function(){
 		$(".5w1h").show();
 	}	
-	this.hide_5w1h=function(){
+	var hide_5w1h=function(){
 		$(".5w1h").hide();
 	}	
+
+	this.set_modal_bystate=function(){
+		
+		switch(state){
+			case '5w1h_2':{}
+			case '5w1h_1': {
+					show_5w1h();
+					//선호도
+					hide_rating();
+					//부합도
+					hide_coincidence();
+					//유사도
+					hide_equal();
+
+					break;
+				}
+			case 'query_2':{
+					hide_5w1h();
+					//선호도
+					show_rating();
+					//부합도
+					show_coincidence();
+					//유사도
+					show_equal();
+					break;
+			}
+			case 'query_1': {
+					hide_5w1h();
+					//선호도
+					show_rating();
+					//부합도
+					show_coincidence();
+					//유사도
+					hide_equal();
+					
+					break;
+				}
+			case 'send_1':{}
+			case 'send_2':{
+					hide_rating();
+					hide_coincidence();
+					hide_equal();
+					hide_5w1h();
+					set_img();
+					break;
+				}
+			default: {
+					break;
+				}
+		};
+	}
 	
 	var focus_modal=this.focus_modal;
 	this.resize_modal=function(){
@@ -255,6 +328,8 @@ function Class_Modal(vid){
 		
 		if(is_touch_device()){
 			myModal.removeClass('fade');
+		} else{
+			//device.animation='slow';
 		}
 		
 	};
@@ -273,49 +348,16 @@ function Class_SurveyForm(){
 	
 	var myPlayer=videojs(vid_tag_id);
 	
+	var firstQueryID=0;
+	
 	var next_btn=$("#next_btn");
 	
 	
 	this.show_survey=function(){
 		survey_form.show(device.animation);
+		myModal.set_modal_bystate();
 		myModal.show_modal();
 		next_btn.prop('disabled',false);
-		
-		switch(myModal.get_state()){
-			case '5w1h_1': {
-					myModal.show_5w1h();
-					//선호도
-					myModal.hide_rating();
-					//부합도
-					myModal.hide_coincidence();
-					//유사도
-					myModal.hide_equal();
-					//클릭시 5w1h_1 쿼리를 서버로 전송
-					next_btn.click(query_5w1h_1);
-					break;
-				}
-			case 'query_1': {
-					myModal.hide_5w1h();
-					//선호도
-					myModal.show_rating();
-					//부합도
-					myModal.show_coincidence();
-					//유사도
-					myModal.hide_equal();
-					
-					if(count+1>=video_link.length){
-						count++;
-						console.log('show image');
-						myModal.set_img();
-						//myModal.set_state('send_1');
-					}
-					
-					break;
-				}	
-			default: {
-					break;
-				}
-		};
 		
 	};
 	var show_survey=this.show_survey;
@@ -369,14 +411,48 @@ function Class_SurveyForm(){
 		}		
 	}
 	
+	function value_check(stage){
+		var i=0;
+		switch(stage){
+			case '5w1h_2': {}
+			case '5w1h_1': {
+				i+=$("input[list=Who]").val().length;
+				i+=$("input[list=WhatAction]").val().length;
+				i+=$("input[list=WhatObject]").val().length;
+				i+=$("input[list=Where]").val().length;
+				i+=$("input[list=When]").val().length;
+				i+=$("input[list=Why]").val().length;
+				i+=$("input[list=How]").val().length;
+				i+=$("input[list=Visual]").val().length;
+				i+=$("input[list=Audio]").val().length;
+				
+				
+				break;
+			}
+			case 'send_2':{}
+			case 'send_1':{
+				i+=$("textarea#select_reason").val().length;
+				break;
+			}
+			default:{i=9999;break;}
+		}
+		console.log('stage:'+stage+' :'+i);
+		return (i==0? false:true);
+	}
+	
 	function query_5w1h_1(){
-		console.log('click'+count);
+		//console.log('click'+count);
+		if(value_check(myModal.get_state())==false){
+			alert('빈칸을 채워주세요');
+			return;
+		}
 		next_btn.prop('disabled',true);
 		
 		var params=null;
 		var str=null;
 		
 		switch(myModal.get_state()){
+			case '5w1h_2': {}
 			case '5w1h_1': {
 					params={
 						WHO:$("input[list=Who]").val(),
@@ -390,7 +466,6 @@ function Class_SurveyForm(){
 						AUDIO:$("input[list=Audio]").val(),
 						type:'json'
 					};
-					//str = jQuery.param( params );
 					str=JSON.stringify(params);
 					break;
 				}
@@ -407,28 +482,63 @@ function Class_SurveyForm(){
 						reason:''
 					}
 					surv.push(params);
+
+					count++;
+					
+					if(count>=queryIDList.length){
+						myModal.set_state('send_1');
+						myModal.set_modal_bystate();
+						next_btn.prop('disabled',false);
+						return;
+					}
+					else{
+						start();
+						return;
+					}	
+					break;
+				}
+			case 'query_2': {
+					params={
+						queryID:queryIDList[count],
+						shotID:shot_id_list[count],
+						totalScore:totalScoreList[count],
+						correct:myModal.get_coincidence(),//부합도
+						preference:myModal.get_rating(),//선호도
+						similar:myModal.get_equal(),//유사도
+						firstQueryID:firstQueryID,
+						//isSelect:(($('.image-picker,.show-html:selected').val())?true:false),
+						isSelect:false,
+						reason:''
+					}
+					
+					surv.push(params);
+
+					count++;
+					
+					if(count>=queryIDList.length){
+						firstQueryID=0;
+						myModal.set_state('send_2');
+						myModal.set_modal_bystate();
+						next_btn.prop('disabled',false);
+						return;
+					}
+					else{
+						start();
+						return;
+					}	
+					break;
+				}
+			case 'send_2' :{}
+			case 'send_1' :{
+					next_btn.prop('disabled',false);
 					if($('.image-picker,.show-html:selected').length){
 						surv[$('.image-picker,.show-html:selected').val()].isSelect=true;
 						surv[$('.image-picker,.show-html:selected').val()].reason=$("textarea#select_reason").val();
-						$('.img_select').remove();
-						$('.thumbnails,image_picker_selector').remove();
+						myModal.delete_img();
 					}
-
-					count++;
-
-					if(count>=video_link.length){
-						str=JSON.stringify(surv);
-						surv=[];
-						count=0;
-						break;
-					} else{
-						
-						start();
-						return;	
-					}
-										
-
-				}
+					str=JSON.stringify(surv);
+				break;
+			}
 			default: {
 					break;
 				}
@@ -440,34 +550,39 @@ function Class_SurveyForm(){
 
 		//send query info
 		$.ajax({
-				type: 'GET',
+				//type: 'GET',
+				type: ((myModal.get_state().includes('5w1h'))?'GET':'POST'),
 				//url: '/get_second_infomation_first',
-				url: ((myModal.get_state().indexOf('_1'))?'/get_second_infomation_first':'/get_second_infomation_second'),
+				url: ((myModal.get_state().includes('_1'))?'/get_second_infomation_first':'/get_second_infomation_second'),
 				data: {data:str},
 				dataType: 'json',
 				success: function(data){
-						console.log('success',data[0]);
-						end_list=data[0].endTimeList;
-						queryIDList=data[0].queryIDList;
-						shot_id_list=data[0].shotIDList;
-						start_list=data[0].startTimeList;
-						totalScoreList=data[0].totalScoreList;
-						
-						var i=0;
-						for (i in data[0].videoURLList){
-							data[0].videoURLList[i]='/assets/'+data[0].videoURLList[i];
+						if(data!=undefined){
+							console.log('success',data[0]);
+							end_list=data[0].endTimeList;
+							queryIDList=data[0].queryIDList;
+							shot_id_list=data[0].shotIDList;
+							start_list=data[0].startTimeList;
+							totalScoreList=data[0].totalScoreList;
+							
+							var i=0;
+							for (i in data[0].videoURLList){
+								data[0].videoURLList[i]='/assets/'+data[0].videoURLList[i];
+							}
+							video_link=data[0].videoURLList;
+							
+							i=0;
+							for (i in data[0].thumbList){
+								data[0].thumbList[i]='/assets/'+data[0].thumbList[i];
+							}
+							thumbList=data[0].thumbList;
+							
+							totalShot=data[0].totalShot;
+							
+														
 						}
-						video_link=data[0].videoURLList;
-						
-						i=0;
-						for (i in data[0].thumbList){
-							data[0].thumbList[i]='/assets/'+data[0].thumbList[i];
-						}
-						thumbList=data[0].thumbList;
-						
-						totalShot=data[0].totalShot;
-						
 						count=0;
+						surv=[];
 						start();
 					},
 				error: ajax_error
@@ -548,9 +663,39 @@ function Class_SurveyForm(){
 	
 	function start(){
 		
-		myModal.set_state('query_1');
-		hide_survey();
-		file_down(video_link[count]);
+		switch(myModal.get_state()){
+			case '5w1h_1':{
+				firstQueryID=queryIDList[0];
+				myModal.set_state('query_1');
+				hide_survey();
+				file_down(video_link[count]);
+				break;
+			}
+			case 'send_1':{
+				myModal.set_state('5w1h_2');
+				myModal.set_modal_bystate();
+				break;
+			}
+			case '5w1h_2':{
+				myModal.set_state('query_2');
+				hide_survey();
+				file_down(video_link[count]);
+				break;
+			}
+			case 'send_2':{
+				myModal.set_state('5w1h_1');
+				myModal.set_modal_bystate();
+				break;
+			}
+			case 'query_1':{
+			}
+			case 'query_2':{
+				hide_survey();
+				file_down(video_link[count]);
+				break;
+			}
+		}
+
 
 	}
 	function init(){
@@ -577,11 +722,11 @@ function Class_SurveyForm(){
 		);
 		
 		
-		myModal.set_5w1h({id:'Who',val:[1,2,3]});
-		myModal.set_5w1h({id:'WhatAction',val:[4,5,6]});
-		myModal.set_5w1h({id:'WhatObject',val:[41,51,61]});
-		myModal.set_5w1h({id:'Where',val:[7,8,9]});
-		myModal.set_5w1h({id:'When',val:['a','b','c']});
+		myModal.set_5w1h({id:'Who',val:[]});
+		myModal.set_5w1h({id:'WhatAction',val:[]});
+		myModal.set_5w1h({id:'WhatObject',val:[]});
+		myModal.set_5w1h({id:'Where',val:[]});
+		myModal.set_5w1h({id:'When',val:[]});
 		myModal.set_5w1h({id:'Why',val:[]})
 		myModal.set_5w1h({id:'How',val:[]});
 		myModal.set_5w1h({id:'Visual',val:[]});
@@ -591,6 +736,9 @@ function Class_SurveyForm(){
 		//console.log(myModal.get_equal());
 		//console.log(myModal.get_coincidence());
 		
+		
+		next_btn.click(query_5w1h_1);
+		myModal.set_state('5w1h_1');
 	};
 	
 	

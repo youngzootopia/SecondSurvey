@@ -12,7 +12,6 @@ class CreateSecondQueryTags < ActiveRecord::Migration[5.0]
     
     execute "ALTER TABLE second_query_tags ADD PRIMARY KEY (queryID, shotID, tagDesc);"
     execute "ALTER TABLE second_query_tags ADD constraint fk_queryID_from_second_queries foreign key (queryID) references second_queries (queryID) ON DELETE cascade;"
-    execute "ALTER TABLE second_query_tags ADD constraint fk_shotID_from_shot_infos_for_second_query_tags foreign key (shotID) references shot_infos (shotID) ON DELETE cascade;"
   end
   
   def down
