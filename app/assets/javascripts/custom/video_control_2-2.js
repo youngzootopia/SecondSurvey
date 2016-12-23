@@ -109,7 +109,7 @@ function Class_Modal(vid){
 	this.focus_modal=function(){
 		html_body.animate({scrollTop : modal_footer.offset().top}, device.animation);
 	};
-
+	var focus_modal=this.focus_modal;
 	
 	this.set_5w1h=function(list){
 		//body.html(null);
@@ -120,13 +120,14 @@ function Class_Modal(vid){
 		a.setAttribute("style", 'margin-right:0px; display:none;');
 		
 		var b = document.createElement("span");
-		b.innerHTML=list.id+':';//+'&nbsp; &nbsp; ';
+		b.innerHTML=list.name;//+'&nbsp; &nbsp; ';
 		b.setAttribute("class", 'col-xs-4 col-sm-4 col-md-2 col-lg-2');
 		
 		var c = document.createElement("INPUT");
 		
 		c.setAttribute("list", list.id);
 		c.setAttribute("class", 'col-xs-8 col-sm-8 col-md-10 col-lg-10');
+		c.setAttribute("placeholder", list.placeholder);
 		
 		var d = document.createElement("DATALIST");
 		d.setAttribute("id", list.id);
@@ -158,6 +159,7 @@ function Class_Modal(vid){
 		//$("select").imagepicker();
 		$('.image-picker,.show-html').imagepicker({
 
+				initialized: function(){document.body.scrollTop = document.body.scrollHeight;},
 				selected: function(selected,opt,e){
 					//console.log(selected.attr('src'));
 					$('#select_img').attr('src',$('.thumbnail.selected>img').attr('src'));
@@ -169,6 +171,7 @@ function Class_Modal(vid){
 		x.setAttribute("class", 'img_select col-xs-12');
 		x.setAttribute("id", 'select_img');
 		x.setAttribute("style", 'margin-bottom:10px');
+		x.onload=function(){focus_modal();};
 		//x.setAttribute("style", 'height:100%');
 		
 		modal_body.append(x);		
@@ -181,7 +184,6 @@ function Class_Modal(vid){
 		
 		$('#select_img').attr('src',$('.thumbnail.selected>img').attr('src'));
 
-
 		
 	}
 	this.delete_img=function(){
@@ -192,14 +194,20 @@ function Class_Modal(vid){
 		$(".5w1h").show();
 	}	
 	var hide_5w1h=function(){
+		//form clear
+		$('.form-group.5w1h input').val('');
 		$(".5w1h").hide();
 	}	
 
 	this.set_modal_bystate=function(){
-		
+
 		switch(state){
 			case '5w1h_2':{}
 			case '5w1h_1': {
+					state.indexOf('5w1h_1')!=-1? $(".modal-header>h4").text('첫번째 질문 작성'):$(".modal-header>h4").text('두번째 질문 작성');
+					state.indexOf('5w1h_1')!=-1? $("#comment").html('7칸 중 최소 2칸을 아래와 같은 예처럼 채워주세요.<br>\
+질의에 관련된 영상이 다음 페이지에 나오면서 설문이 시작됩니다.'):$("#comment").html('7칸 중 최소 2칸을 첫번째 질의를 통해 최종선택하신 사진과 관련하여 아래와 같은 예처럼 채워주세요.<br>\
+질의에 관련된 영상이 다음 페이지에 나오면서 설문이 시작됩니다.');
 					show_5w1h();
 					//선호도
 					hide_rating();
@@ -211,6 +219,7 @@ function Class_Modal(vid){
 					break;
 				}
 			case 'query_2':{
+					$(".modal-header>h4").text('두번째 질문의 '+(count+1)+'번째 영상 (총'+start_list.length+'개)');
 					hide_5w1h();
 					//선호도
 					show_rating();
@@ -221,6 +230,7 @@ function Class_Modal(vid){
 					break;
 			}
 			case 'query_1': {
+					$(".modal-header>h4").text('첫번째 질문의 '+(count+1)+'번째 영상 (총'+start_list.length+'개)');
 					hide_5w1h();
 					//선호도
 					show_rating();
@@ -233,10 +243,13 @@ function Class_Modal(vid){
 				}
 			case 'send_1':{}
 			case 'send_2':{
+
+					$(".modal-header>h4").text('질문한 내용과 가장 비슷한 영상을 선택해주세요');
 					hide_rating();
 					hide_coincidence();
 					hide_equal();
 					hide_5w1h();
+					//$("#comment").html('질문한 내용과 가장 비슷한 영상을 선택해주세요').show();;
 					set_img();
 					break;
 				}
@@ -244,9 +257,10 @@ function Class_Modal(vid){
 					break;
 				}
 		};
+		focus_modal();
 	}
 	
-	var focus_modal=this.focus_modal;
+
 	this.resize_modal=function(){
 		var dialog_height=window.innerHeight;
 		var body_height=null;
@@ -259,7 +273,9 @@ function Class_Modal(vid){
 		body_height=dialog_height - extra;
 		
 		modal_dialog.css('max-height',dialog_height);
-		modal_body.css('max-height',body_height);		
+		modal_body.css('max-height',body_height);
+		
+		
 	};
 	var resize_modal=this.resize_modal;
 	this.isopen_modal=function(){
@@ -358,7 +374,7 @@ function Class_SurveyForm(){
 		myModal.set_modal_bystate();
 		myModal.show_modal();
 		next_btn.prop('disabled',false);
-		
+		myModal.focus_modal();
 	};
 	var show_survey=this.show_survey;
 	this.hide_survey=function(){
@@ -391,7 +407,7 @@ function Class_SurveyForm(){
 
 	
 
-	var ajax_error=function(){
+	var ajax_error=function(request,error){
 		console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 					
 		alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -416,28 +432,28 @@ function Class_SurveyForm(){
 		switch(stage){
 			case '5w1h_2': {}
 			case '5w1h_1': {
-				i+=$("input[list=Who]").val().length;
-				i+=$("input[list=WhatAction]").val().length;
-				i+=$("input[list=WhatObject]").val().length;
-				i+=$("input[list=Where]").val().length;
-				i+=$("input[list=When]").val().length;
-				i+=$("input[list=Why]").val().length;
-				i+=$("input[list=How]").val().length;
-				i+=$("input[list=Visual]").val().length;
-				i+=$("input[list=Audio]").val().length;
+				$("input[list=Who]").val().length>0? i+=1:i+=0;
+				$("input[list=WhatAction]").val().length>0? i+=1:i+=0;
+				$("input[list=WhatObject]").val().length>0? i+=1:i+=0;
+				$("input[list=Where]").val().length>0? i+=1:i+=0;
+				$("input[list=When]").val().length>0? i+=1:i+=0;
+				$("input[list=Why]").val().length>0? i+=1:i+=0;
+				$("input[list=How]").val().length>0? i+=1:i+=0;
+				$("input[list=Visual]").val().length>0? i+=1:i+=0;
+				$("input[list=Audio]").val().length>0? i+=1:i+=0;
 				
 				
 				break;
 			}
 			case 'send_2':{}
 			case 'send_1':{
-				i+=$("textarea#select_reason").val().length;
+				i+=$("textarea#select_reason").val().length+1;
 				break;
 			}
 			default:{i=9999;break;}
 		}
 		console.log('stage:'+stage+' :'+i);
-		return (i==0? false:true);
+		return (i>1? true:false);
 	}
 	
 	function query_5w1h_1(){
@@ -520,6 +536,7 @@ function Class_SurveyForm(){
 						myModal.set_state('send_2');
 						myModal.set_modal_bystate();
 						next_btn.prop('disabled',false);
+						$(window).resize();
 						return;
 					}
 					else{
@@ -551,9 +568,9 @@ function Class_SurveyForm(){
 		//send query info
 		$.ajax({
 				//type: 'GET',
-				type: ((myModal.get_state().includes('5w1h'))?'GET':'POST'),
+				type: ((myModal.get_state().indexOf('5w1h')!=-1)?'GET':'POST'),
 				//url: '/get_second_infomation_first',
-				url: ((myModal.get_state().includes('_1'))?'/get_second_infomation_first':'/get_second_infomation_second'),
+				url: ((myModal.get_state().indexOf('_1')!=-1)?'/get_second_infomation_first':'/get_second_infomation_second'),
 				data: {data:str},
 				dataType: 'json',
 				success: function(data){
@@ -685,6 +702,7 @@ function Class_SurveyForm(){
 			case 'send_2':{
 				myModal.set_state('5w1h_1');
 				myModal.set_modal_bystate();
+
 				break;
 			}
 			case 'query_1':{
@@ -695,7 +713,6 @@ function Class_SurveyForm(){
 				break;
 			}
 		}
-
 
 	}
 	function init(){
@@ -722,15 +739,15 @@ function Class_SurveyForm(){
 		);
 		
 		
-		myModal.set_5w1h({id:'Who',val:[]});
-		myModal.set_5w1h({id:'WhatAction',val:[]});
-		myModal.set_5w1h({id:'WhatObject',val:[]});
-		myModal.set_5w1h({id:'Where',val:[]});
-		myModal.set_5w1h({id:'When',val:[]});
-		myModal.set_5w1h({id:'Why',val:[]})
-		myModal.set_5w1h({id:'How',val:[]});
-		myModal.set_5w1h({id:'Visual',val:[]});
-		myModal.set_5w1h({id:'Audio',val:[]});;
+		myModal.set_5w1h({id:'Who',name:'누가(사람,동물)',placeholder:'ex)선생님, 고양이 등',val:[]});
+		myModal.set_5w1h({id:'WhatAction',name:'어떤행동을하다',placeholder:'ex)뛰다, 운다 등',val:[]});
+		myModal.set_5w1h({id:'WhatObject',name:'어떤물체를',placeholder:'ex)빵, 가위 등',val:[]});
+		myModal.set_5w1h({id:'Where',name:'어디에서',placeholder:'ex)공원, 들판 등',val:[]});
+		myModal.set_5w1h({id:'When',name:'언제',placeholder:'ex)아침에, 크리스마스 등',val:[]});
+		myModal.set_5w1h({id:'Why',name:'왜',placeholder:'ex)생일, 졸업식 등',val:[]})
+		myModal.set_5w1h({id:'How',name:'어떻게',placeholder:'ex)배를타고, 줄을서서 등',val:[]});
+		myModal.set_5w1h({id:'Visual',name:'Visual',placeholder:'',val:[]});
+		myModal.set_5w1h({id:'Audio',name:'Audio',placeholder:'',val:[]});;
 		
 		//console.log(myModal.get_rating());
 		//console.log(myModal.get_equal());

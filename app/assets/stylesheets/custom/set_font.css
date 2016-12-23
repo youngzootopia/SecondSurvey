@@ -24,31 +24,36 @@ html, body, form[name="login"] button, form[name="signup"] button, .datepicker t
 ::-webkit-input-placeholder {
    	font: 14px 'BMDOHYEON' !important;
 	font-family:'BMDOHYEON' !important;
-	color: black;
+	/*color: black;*/
+	color: gray;
 }
 
 
 :-moz-placeholder { /* Firefox 18- */
     font: 14px 'BMDOHYEON' !important;
 	font-family:'BMDOHYEON' !important;
-	color: black;
+	/*color: black;*/
+	color: gray;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
     font: 14px 'BMDOHYEON' !important;
 	font-family:'BMDOHYEON' !important;
-	color: black;  
+	/*color: black;*/
+	color: gray;  
 }
 
 :-ms-input-placeholder {  
    	font: 14px 'BMDOHYEON' !important;
 	font-family:'BMDOHYEON' !important;
-	color: black;  
+	/*color: black;*/
+	color: gray;
 }
 ::-ms-input-placeholder {  
    	font: 14px 'BMDOHYEON' !important;
 	font-family:'BMDOHYEON' !important;
-	color: black;  
+	/*color: black;*/
+	color: gray;
 }
 
 
