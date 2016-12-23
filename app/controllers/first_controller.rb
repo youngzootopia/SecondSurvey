@@ -14,7 +14,7 @@ class FirstController < ApplicationController
   
   # 정보 요청할 떄
   def get_json
-    get_infomation
+    get_information
     
     request.format = :json
     respond_to do |format|
@@ -43,7 +43,7 @@ class FirstController < ApplicationController
       @user.currentShot += @user.group
       if @user.save # 데이터베이스에 잘 저장 되었다면
         # 정보 전송
-        get_infomation
+        get_information
               
         request.format = :json
         respond_to do |format|
@@ -104,7 +104,7 @@ class FirstController < ApplicationController
     end
     
     # 샷 리스트, 시작시간, 끝 시간, 동영상 URL, CID, 동영상 제목 등 정보를 가져와 변수에 할당하는 함수
-    def get_infomation
+    def get_information
       @user = User.find(session[:user_id])
       
       # currentShot 증가. 첫 접속이라면 1부터 시작
