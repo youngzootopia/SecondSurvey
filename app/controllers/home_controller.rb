@@ -1,9 +1,14 @@
 class HomeController < ApplicationController
   def contact
     # 설문 진행 상황과 연락처를 보여준다.
-    @user = User.find(session[:user_id])
-    @lastShot = ShotInfo.last
-    @max = MaxQuery.find(1)
+    if session[:user_id] != nil
+      @user = User.find(session[:user_id])
+      @lastShot = ShotInfo.last
+      @queries = SecondQuery.where(sUserID: @user.sUserID).length
+      @max = MaxQuery.find(1)
+    else
+      redirect_to "/login"
+    end
   end
   
   def admin

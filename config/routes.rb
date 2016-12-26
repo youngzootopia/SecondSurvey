@@ -47,10 +47,16 @@ Rails.application.routes.draw do
   get  '/admin/first_query',                 to: 'second#first_index'
   get  '/admin/first_query/delete',          to: 'second#first_destroy'
   get  '/admin/first_query_tag',             to: 'second#first_tag_index'
+  get  '/admin/first_query_survey',          to: 'second#first_query_survey_index'
+  get  '/admin/first_query_survey/edit',     to: 'second#first_query_survey_edit'
+  post '/admin/first_query_survey/edit',     to: 'second#first_query_survey_update'
   # 2차 쿼리
   get  '/admin/second_query',                to: 'second#second_index'
   get  '/admin/second_query/delete',         to: 'second#second_destroy'
   get  '/admin/second_query_tag',            to: 'second#second_tag_index'
+  get  '/admin/second_query_survey',         to: 'second#second_query_survey_index'
+  get  '/admin/second_query_survey/edit',    to: 'second#second_query_survey_edit'
+  post '/admin/second_query_survey/edit',    to: 'second#second_query_survey_update'
   
   #--------------------------------------------------------------------------
   # 회원가입, 정보 수정(비밀번호 포함), 로그인-아웃, 필터링 정보 수집 

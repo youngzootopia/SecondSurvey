@@ -6,9 +6,14 @@ class SecondController < ApplicationController
   
   # 설문 페이지
   def get_page
-    @user = User.find(session[:user_id])
-    unless Filtering.exists? @user.sUserID
-      redirect_to "/filtering" 
+    if session[:user_id]
+      @user = User.find(session[:user_id])
+            
+      unless Filtering.exists? @user.sUserID
+        redirect_to "/filtering" 
+      end
+    else
+      redirect_to "/login"
     end
   end
   
@@ -26,31 +31,34 @@ class SecondController < ApplicationController
   # 1차 쿼리 저장하고 2차 쿼리로 넘어감
   def first_commit       
     # 유저 정보 받아오고
-    @user = User.find(session[:user_id])
-    
-    # form 데이터 받아오고 for문
-    @surveyList = JSON.parse(params[:data])
-    
-    for @survey in @surveyList
-      @firstQuerySurvey = FirstQuerySurvey.new
-      @firstQuerySurvey.queryID = @survey["queryID"]
-      @firstQuerySurvey.shotID = @survey["shotID"]
-      @firstQuerySurvey.totalScore = @survey["totalScore"]
-      @firstQuerySurvey.correct = @survey["correct"]
-      @firstQuerySurvey.preference = @survey["preference"]
-      @firstQuerySurvey.reason = @survey["reason"]
-      @firstQuerySurvey.isSelect = @survey["isSelect"]
-      
-      if @firstQuerySurvey.save # 데이터베이스에 잘 저장 되었다면
-        @user.querys += 1 # query  1 증가
-        if @user.save # 데이터베이스에 잘 저장 되었다면
-          next
+    if session[:user_id]
+      @user = User.find(session[:user_id])
+      # form 데이터 받아오고 for문
+      @surveyList = JSON.parse(params[:data])
+          
+      for @survey in @surveyList
+        @firstQuerySurvey = FirstQuerySurvey.new
+        @firstQuerySurvey.queryID = @survey["queryID"]
+        @firstQuerySurvey.shotID = @survey["shotID"]
+        @firstQuerySurvey.totalScore = @survey["totalScore"]
+        @firstQuerySurvey.correct = @survey["correct"]
+        @firstQuerySurvey.preference = @survey["preference"]
+        @firstQuerySurvey.reason = @survey["reason"]
+        @firstQuerySurvey.isSelect = @survey["isSelect"]
+            
+        if @firstQuerySurvey.save # 데이터베이스에 잘 저장 되었다면
+          @user.querys += 1 # query  1 증가
+          if @user.save # 데이터베이스에 잘 저장 되었다면
+            next
+          else
+            render 'get_page'                
+          end
         else
-          render 'get_page'                
-        end
-      else
-        render 'get_page'
-      end              
+          render 'get_page'
+        end              
+      end
+    else
+      redirect_to "/login"
     end
   end
   
@@ -68,33 +76,37 @@ class SecondController < ApplicationController
   # 2차 쿼리 저장하고 다시 2차 설문으로 넘어감
   def second_commit
     # 유저 정보 받아오고
-    @user = User.find(session[:user_id])
+    if session[:user_id]
+      @user = User.find(session[:user_id])
     
-    # form 데이터 받아오고 for문
-    @surveyList = JSON.parse(params[:data])
-      
-    for @survey in @surveyList
-      @secondQuerySurvey = SecondQuerySurvey.new
-      @secondQuerySurvey.queryID = @survey["queryID"]
-      @secondQuerySurvey.shotID = @survey["shotID"]
-      @secondQuerySurvey.firstQueryID = @survey["firstQueryID"]
-      @secondQuerySurvey.totalScore = @survey["totalScore"]
-      @secondQuerySurvey.correct = @survey["correct"]
-      @secondQuerySurvey.similarity = @survey["similar"]
-      @secondQuerySurvey.preference = @survey["preference"]
-      @secondQuerySurvey.reason = @survey["reason"]
-      @secondQuerySurvey.isSelect = @survey["isSelect"]
-      
-      if @secondQuerySurvey.save # 데이터베이스에 잘 저장 되었다면
-        @user.querys += 1 # query  1 증가
-        if @user.save # 데이터베이스에 잘 저장 되었다면
-          next
+      # form 데이터 받아오고 for문
+      @surveyList = JSON.parse(params[:data])
+        
+      for @survey in @surveyList
+        @secondQuerySurvey = SecondQuerySurvey.new
+        @secondQuerySurvey.queryID = @survey["queryID"]
+        @secondQuerySurvey.shotID = @survey["shotID"]
+        @secondQuerySurvey.firstQueryID = @survey["firstQueryID"]
+        @secondQuerySurvey.totalScore = @survey["totalScore"]
+        @secondQuerySurvey.correct = @survey["correct"]
+        @secondQuerySurvey.similarity = @survey["similar"]
+        @secondQuerySurvey.preference = @survey["preference"]
+        @secondQuerySurvey.reason = @survey["reason"]
+        @secondQuerySurvey.isSelect = @survey["isSelect"]
+        
+        if @secondQuerySurvey.save # 데이터베이스에 잘 저장 되었다면
+          @user.querys += 1 # query  1 증가
+          if @user.save # 데이터베이스에 잘 저장 되었다면
+            next
+          else
+            render 'get_page'                
+          end
         else
-          render 'get_page'                
-        end
-      else
-        render 'get_page'
-      end              
+          render 'get_page'
+        end              
+      end
+    else
+      redirect_to "/login"
     end
   end
   
@@ -119,6 +131,24 @@ class SecondController < ApplicationController
   def first_tag_index
     @tags = FirstQueryTag.all
   end
+  # 1차 쿼리 설문 리스트 보기
+  def first_query_survey_index
+    @firstQuerySurveys = FirstQuerySurvey.all
+  end
+  def first_query_survey_edit
+    @firstQuerySurvey = FirstQuerySurvey.where("queryID = #{params[:queryID]} AND shotID = #{params[:shotID]}")[0]
+  end
+  def first_query_survey_update
+    @firstQuerySurvey = FirstQuerySurvey.where("queryID = #{params[:first_query_survey][:queryID]} AND shotID = #{params[:first_query_survey][:shotID]}")[0]
+    
+    respond_to do |format|
+      if @firstQuerySurvey.update(first_params)
+        format.html { redirect_to "/admin/first_query_survey", notice: "쿼리아이디 = #{@firstQuerySurvey.queryID}, 샷아이디 = #{@firstQuerySurvey.shotID} 설문이 정상적으로 수정되었습니다." }
+      else
+        format.html { render :first_query_survey_edit }
+      end
+    end
+  end
   
   #------------------------ 2차 쿼리
   # for second_quries 테이블
@@ -139,6 +169,23 @@ class SecondController < ApplicationController
   # 1차 쿼리 태그 리스트 보기
   def second_tag_index
     @tags = SecondQueryTag.all
+  end
+  def second_query_survey_index
+    @secondQuerySurveys = SecondQuerySurvey.all
+  end
+  def second_query_survey_edit
+    @secondQuerySurvey = SecondQuerySurvey.where("queryID = #{params[:queryID]} AND shotID = #{params[:shotID]}")[0]
+  end
+  def second_query_survey_update
+    @secondQuerySurvey = SecondQuerySurvey.where("queryID = #{params[:second_query_survey][:queryID]} AND shotID = #{params[:second_query_survey][:shotID]}")[0]
+        
+    respond_to do |format|
+      if @secondQuerySurvey.update(second_params)
+        format.html { redirect_to "/admin/second_query_survey", notice: "쿼리아이디 = #{@secondQuerySurvey.queryID}, 샷아이디 = #{@secondQuerySurvey.shotID} 설문이 정상적으로 수정되었습니다." }
+      else
+        format.html { render :second_query_survey_edit }
+      end
+    end
   end
 
   
@@ -239,5 +286,15 @@ class SecondController < ApplicationController
       @thumbList = Array.new
       @thumbList.push "thumb/582.jpg"
       @thumbList.push "thumb/674.jpg"
+    end
+    
+    # 1차 쿼리 설문 form 파라미터들
+    def first_params
+      params.require(:first_query_survey).permit(:queryID, :shotID, :correct, :preference, :reason, :isSelect)
+    end
+    
+    # 2차 쿼리 설문 form 파라미터들
+    def second_params
+      params.require(:second_query_survey).permit(:queryID, :shotID, :correct, :similarity, :preference, :reason, :isSelect)
     end
 end
