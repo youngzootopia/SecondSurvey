@@ -159,7 +159,7 @@ function Class_Modal(vid){
 		//$("select").imagepicker();
 		$('.image-picker,.show-html').imagepicker({
 
-				initialized: function(){document.body.scrollTop = document.body.scrollHeight;},
+				//initialized: function(){document.body.scrollTop = document.body.scrollHeight;},
 				selected: function(selected,opt,e){
 					//console.log(selected.attr('src'));
 					$('#select_img').attr('src',$('.thumbnail.selected>img').attr('src'));

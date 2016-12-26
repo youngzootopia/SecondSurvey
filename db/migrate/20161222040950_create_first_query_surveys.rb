@@ -1,8 +1,8 @@
 class CreateFirstQuerySurveys < ActiveRecord::Migration[5.0]
   def up
     create_table(:first_query_surveys, :id => false) do |t|
-      t.integer :queryID
-      t.integer :shotID
+      t.integer :queryID, :options => 'PRIMARY KEY'
+      t.integer :shotID, :options => 'PRIMARY KEY'
       t.integer :totalScore
       t.integer :correct
       t.integer :preference

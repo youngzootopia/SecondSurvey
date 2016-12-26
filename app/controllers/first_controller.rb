@@ -4,12 +4,16 @@ class FirstController < ApplicationController
   
   # 설문 페이지
   def get_page
-    @user = User.find(session[:user_id])
-    unless Filtering.exists? @user.sUserID
-      redirect_to "/filtering" 
-    end
-    
-    @first_survey = FirstSurvey.new
+    if session[:user_id] != nil
+      @user = User.find(session[:user_id])
+      unless Filtering.exists? @user.sUserID
+        redirect_to "/filtering" 
+      end
+          
+      @first_survey = FirstSurvey.new
+    else
+      redirect_to "/login"
+    end 
   end
   
   # 정보 요청할 떄

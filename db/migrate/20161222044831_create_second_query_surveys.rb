@@ -1,8 +1,8 @@
 class CreateSecondQuerySurveys < ActiveRecord::Migration[5.0]
   def up
     create_table(:second_query_surveys, :id => false) do |t|
-      t.integer :queryID
-      t.integer :shotID
+      t.integer :queryID, :options => 'PRIMARY KEY'
+      t.integer :shotID, :options => 'PRIMARY KEY'
       t.integer :firstQueryID
       t.integer :totalScore
       t.integer :correct
@@ -20,6 +20,6 @@ class CreateSecondQuerySurveys < ActiveRecord::Migration[5.0]
   end
   
   def down
-    drop_table(:first_query_surveys)
+    drop_table(:second_query_surveys)
   end
 end
