@@ -9,6 +9,12 @@ class FirstController < ApplicationController
       unless Filtering.exists? @user.sUserID
         redirect_to "/filtering" 
       end
+      
+      # 마지막 샷이라면
+      @lastShot = ShotInfo.last
+      if @user.currentShot >= @lastShot.id
+        redirect_to "/contact" 
+      end
           
       @first_survey = FirstSurvey.new
     else
@@ -22,7 +28,7 @@ class FirstController < ApplicationController
     
     request.format = :json
     respond_to do |format|
-    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: @lastShot.id] }
+    format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: (@user.currentShot * 100.0 / (@lastShot.id + 1))] }
     end
   end
   
@@ -46,12 +52,26 @@ class FirstController < ApplicationController
       # currentShot 증가
       @user.currentShot += @user.group
       if @user.save # 데이터베이스에 잘 저장 되었다면
-        # 정보 전송
-        get_information
-              
-        request.format = :json
-        respond_to do |format|
-        format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: @lastShot.id] }
+        @lastShot = ShotInfo.last
+        
+        if @user.currentShot > @lastShot.id
+          @isLast = true
+          
+          request.format = :json
+          respond_to do |format|
+            format.json { render :json => [shotIDList: "", startTimeList: "", endTimeList: "", videoURL: "", CID: "", title: "", totalShot: "", isLast: @isLast] }
+          end
+          
+        else
+          @isLast = false
+            
+          # 정보 전송
+          get_information
+                  
+          request.format = :json
+          respond_to do |format|
+            format.json { render :json => [shotIDList: @shotIDList, startTimeList: @startTimeList, endTimeList: @endTimeList, videoURL: @videoURL, CID: @CID, title: @title, totalShot: (@user.currentShot * 100.0 / (@lastShot.id + 1)), isLast: @isLast] }
+          end
         end
       else # user 저장 실패
         render 'get_json'
@@ -110,17 +130,7 @@ class FirstController < ApplicationController
     # 샷 리스트, 시작시간, 끝 시간, 동영상 URL, CID, 동영상 제목 등 정보를 가져와 변수에 할당하는 함수
     def get_information
       @user = User.find(session[:user_id])
-      
-      # currentShot 증가. 첫 접속이라면 1부터 시작
-      if @user.currentShot == 0
-        @user.currentShot = 1
-      end
-      
-      # 마지막 샷이라면
       @lastShot = ShotInfo.last
-      if @user.currentShot == @lastShot.id
-        redirect_to "/progress" 
-      end
       
       # currentShot 가져오기
       @shot = get_shot
@@ -139,10 +149,10 @@ class FirstController < ApplicationController
       @shotIDList = Array.new
       @startTimeList = Array.new
       @endTimeList = Array.new
-      @user.currentShot.step(@shotList.last.id, @user.group) do |id|
-        @shotIDList.push @shotList.find(id).ShotID
-        @startTimeList.push(@shotList.find(id).StartFrame / @video.FPS)
-        @endTimeList.push(@shotList.find(id).EndFrame / @video.FPS) 
+      @shotList.each do |shot|
+        @shotIDList.push shot.ShotID
+        @startTimeList.push(shot.StartFrame / @video.FPS)
+        @endTimeList.push(shot.EndFrame / @video.FPS) 
       end
       
       # 동영상 스테틱 URL 미완.

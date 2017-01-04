@@ -42,6 +42,7 @@
 		price.addEventListener("change", function() {
 			label.innerHTML = "시청 가격: &nbsp;" + price.value+"원";
 		}, false); 
+		(label.onload=function(){label.innerHTML = "시청 가격: &nbsp;" + price.value+"원";})();
 	  </script>
       
       <button type="submit" class="btn btn-lg btn-default btn-group-justified" >저장

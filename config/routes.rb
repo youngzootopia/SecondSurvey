@@ -1,15 +1,5 @@
 Rails.application.routes.draw do
-  resources :max_queries
-  resources :second_query_surveys
-  resources :first_query_surveys
-  resources :second_query_tags
-  resources :second_queries
-  resources :first_query_tags
-  resources :first_queries
   root :to => 'sessions#new'
-
-  resources :shot_infos
-  resources :clists
   
   # 진행상황 & 문의사항 페이지
   get	 '/contact',						            	 to: 'home#contact'

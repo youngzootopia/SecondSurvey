@@ -284,8 +284,8 @@ class SecondController < ApplicationController
       @totalScoreList.push 1
       @totalScoreList.push 3
       @thumbList = Array.new
-      @thumbList.push "thumb/582.jpg"
-      @thumbList.push "thumb/674.jpg"
+      @thumbList.push "projects/Bicycle stunt/bic_077/20160109/674.jpg"
+      @thumbList.push "projects/Bicycle stunt/bic_077/20160109/582.jpg"
     end
     
     # 1차 쿼리 설문 form 파라미터들

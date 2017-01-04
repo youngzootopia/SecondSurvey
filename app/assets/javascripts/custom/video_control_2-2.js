@@ -204,9 +204,9 @@ function Class_Modal(vid){
 		switch(state){
 			case '5w1h_2':{}
 			case '5w1h_1': {
-					state.indexOf('5w1h_1')!=-1? $(".modal-header>h4").text('첫번째 질문 작성'):$(".modal-header>h4").text('두번째 질문 작성');
-					state.indexOf('5w1h_1')!=-1? $("#comment").html('7칸 중 최소 2칸을 아래와 같은 예처럼 채워주세요.<br>\
-질의에 관련된 영상이 다음 페이지에 나오면서 설문이 시작됩니다.'):$("#comment").html('7칸 중 최소 2칸을 첫번째 질의를 통해 최종선택하신 사진과 관련하여 아래와 같은 예처럼 채워주세요.<br>\
+					state.indexOf('5w1h_1')!=-1? $(".modal-header>h4").text('첫번째 질문 작성 (놀이공원, 요리, 생일파티, 애완동물에 관련하여 질의 부탁드립니다.)'):$(".modal-header>h4").text('두번째 질문 작성');
+					state.indexOf('5w1h_1')!=-1? $("#comment").html('아래와 같은 예처럼 채워주세요.<br>\
+질의에 관련된 영상이 다음 페이지에 나오면서 설문이 시작됩니다.'):$("#comment").html('첫번째 질의를 통해 최종선택하신 사진과 관련하여 아래와 같은 예처럼 채워주세요.<br>\
 질의에 관련된 영상이 다음 페이지에 나오면서 설문이 시작됩니다.');
 					show_5w1h();
 					//선호도
@@ -296,29 +296,34 @@ function Class_Modal(vid){
 			rating: 3.0,//default rating
 			numStars: 5,
 			maxValue:5,
-			halfStar: true,
+			//halfStar: true,
+			halfStar: false,
+			fullStar: true,
 			//set min fill rate area
-			onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','10%');},
+			//onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','10%');},
+			onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','20%');},
 			//set min value
 			onSet: function (value, rateYoInstance){	if(value==0){rating.rateYo("rating", 1);}	}
 		});
 		equal.rateYo({
-			rating: 3.5,//default rating
+			rating: 4.0,//default rating
 			numStars: 5,
 			maxValue:5,
-			halfStar: true,
+			halfStar: false,
+			fullStar: true,
 			//set min fill rate area
-			onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','10%');},
+			onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','20%');},
 			//set min value
 			onSet: function (value, rateYoInstance){	if(value==0){equal.rateYo("rating", 1);}	}
 		});
 		coincidence.rateYo({
-			rating: 4.0,//default rating
+			rating: 5.0,//default rating
 			numStars: 5,
 			maxValue:5,
-			halfStar: true,
+			halfStar: false,
+			fullStar: true,
 			//set min fill rate area
-			onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','10%');},
+			onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','20%');},
 			//set min value
 			onSet: function (value, rateYoInstance){	if(value==0){coincidence.rateYo("rating", 1);}	}
 		});
@@ -368,6 +373,8 @@ function Class_SurveyForm(){
 	
 	var next_btn=$("#next_btn");
 	
+	var survey_count=2;
+	
 	
 	this.show_survey=function(){
 		survey_form.show(device.animation);
@@ -394,7 +401,7 @@ function Class_SurveyForm(){
 		}
 
 		if(this.currentTime()>=end_list[count]) {
-			console.log(this.currentTime());
+			//console.log(this.currentTime());
 			
 			this.off("timeupdate",myPlayer.time_out);
 		
@@ -416,7 +423,7 @@ function Class_SurveyForm(){
 	
 	
 	function window_resize(e){
-		if(e){console.log(e.type);};
+		//if(e){console.log(e.type);};
 		//screen height renewal
 		if(myModal.isopen_modal()){
 			myModal.resize_modal();
@@ -442,24 +449,41 @@ function Class_SurveyForm(){
 				$("input[list=Visual]").val().length>0? i+=1:i+=0;
 				$("input[list=Audio]").val().length>0? i+=1:i+=0;
 				
+				if(i>=survey_count){
+					
+					if(stage=='5w1h_2'){survey_count++;}
+					
+					if(survey_count>=6){
+						survey_count=2;
+					}
+					return true;
+				}else{
+					return false
+				}
 				
 				break;
 			}
 			case 'send_2':{}
 			case 'send_1':{
 				i+=$("textarea#select_reason").val().length+1;
+				return (i>1? true:false);
 				break;
 			}
-			default:{i=9999;break;}
+			default:{i=9999;break; return (i>1? true:false);}
 		}
-		console.log('stage:'+stage+' :'+i);
+		//console.log('stage:'+stage+' :'+i);
 		return (i>1? true:false);
 	}
 	
 	function query_5w1h_1(){
 		//console.log('click'+count);
 		if(value_check(myModal.get_state())==false){
-			alert('빈칸을 채워주세요');
+			if(myModal.get_state().indexOf('5w1h')!=-1){
+				alert((survey_count)+'칸을 채워주세요');
+			}
+			else{
+				alert('빈칸을 채워주세요');
+			}
 			return;
 		}
 		next_btn.prop('disabled',true);
@@ -561,7 +585,7 @@ function Class_SurveyForm(){
 				}
 		};
 
-		console.log(str);
+		//console.log(str);
 		
 		
 
@@ -575,7 +599,7 @@ function Class_SurveyForm(){
 				dataType: 'json',
 				success: function(data){
 						if(data!=undefined){
-							console.log('success',data[0]);
+							//console.log('success',data[0]);
 							end_list=data[0].endTimeList;
 							queryIDList=data[0].queryIDList;
 							shot_id_list=data[0].shotIDList;
@@ -625,11 +649,11 @@ function Class_SurveyForm(){
 					myPlayer.src(vid);
 					//meta data downloading
 					myPlayer.on('loadedmetadata',function(e){
-							console.log(e.type);										
+							//console.log(e.type);										
 							this.off('loadedmetadata',arguments.callee);
 							//second event
 							this.on('loadeddata',function(e){
-									console.log(e.type);
+									//console.log(e.type);
 									this.off('loadeddata',arguments.callee);
 									myPlayer.set_curtime();
 									this.on("timeupdate",myPlayer.time_out);
@@ -732,7 +756,7 @@ function Class_SurveyForm(){
 					video_form.reset_pos(survey_form);
 				}		
 			
-				console.log(e.type);
+				//console.log(e.type);
 				survey_form.toggleClass('col-lg-9');
 				myModal.resize_modal();
 			}
@@ -746,8 +770,8 @@ function Class_SurveyForm(){
 		myModal.set_5w1h({id:'When',name:'언제',placeholder:'ex)아침에, 크리스마스 등',val:[]});
 		myModal.set_5w1h({id:'Why',name:'왜',placeholder:'ex)생일, 졸업식 등',val:[]})
 		myModal.set_5w1h({id:'How',name:'어떻게',placeholder:'ex)배를타고, 줄을서서 등',val:[]});
-		myModal.set_5w1h({id:'Visual',name:'Visual',placeholder:'',val:[]});
-		myModal.set_5w1h({id:'Audio',name:'Audio',placeholder:'',val:[]});;
+		myModal.set_5w1h({id:'Visual',name:'Visual',placeholder:'시각적인 단어 ex) 고양이, 빵, 들판',val:[]});
+		myModal.set_5w1h({id:'Audio',name:'Audio',placeholder:'청각적인 단어 ex) 박수, 리코더',val:[]});;
 		
 		//console.log(myModal.get_rating());
 		//console.log(myModal.get_equal());

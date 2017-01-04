@@ -56,8 +56,13 @@ function Class_Modal(vid){
 	this.get_reason=function(){
 		return reason.val();
 	};
+	this.set_reason=function(arg){
+		return reason.val(arg);
+	}
+	
 	this.set_persent=function(current){
-		persent.text((current/totalShot*100).toFixed(2)+'%');
+		//persent.text((current/totalShot*100).toFixed(2)+'%');
+		persent.text((totalShot).toFixed(2)+'%');
 	}
 	this.show_modal=function(){
 		myModal.modal("show",device.animation,{backdrop: true});
@@ -101,9 +106,10 @@ function Class_Modal(vid){
 			rating: 3.0,//default rating
 			numStars: 5,
 			maxValue:5,
-			halfStar: true,
+			halfStar: false,
+			fullStar: true,
 			//set min fill rate area
-			onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','10%');},
+			onInit: function (rating, rateYoInstance){	$("div[class='jq-ry-rated-group jq-ry-group']").css('min-width','20%');},
 			//set min value
 			onSet: function (value, rateYoInstance){	if(value==0){rating.rateYo("rating", 1);}	}
 		});
@@ -138,6 +144,22 @@ function Class_Modal(vid){
 				}
 			);
 		}
+		
+		reason.keydown(function(e){
+			//console.log(e.keyCode);
+			if(e.keyCode==13){
+				if(e.preventDefault){
+					e.preventDefault();
+					var nxt_btn=next_btn=$("#next_btn");
+					nxt_btn.click();					
+				}else{
+					var nxt_btn=next_btn=$("#next_btn");
+					nxt_btn.click();
+					e.returnValue = false;
+				}
+				
+			}
+		});
 		
 	};
 	init();
@@ -234,6 +256,13 @@ function Class_SurveyForm(){
 		} else{
 			//revoke url obj
 			(window.URL).revokeObjectURL(myPlayer.currentSrc());
+			
+			if(data[0].isLast==true){
+				//last shot
+				location.replace("http://211.253.24.242/contact")
+				return;
+			}
+			
 			//처음이거나 해당 영상의 샷을 다 진행해서 다음 링크를 받은경우
 			video_link='/assets/'+data[0].videoURL;
 			start_list=data[0].startTimeList;
@@ -411,6 +440,7 @@ function Class_SurveyForm(){
 				survey.fileName=filename;
 				survey.shotID=shot_id_list[count];
 				survey.reason=myModal.get_reason();
+				myModal.set_reason('');
 				survey.preference= myModal.get_rating();
 				//survey.time=end_list[count];
 				

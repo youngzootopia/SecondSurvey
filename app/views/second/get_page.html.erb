@@ -2,7 +2,10 @@
   <%= stylesheet_link_tag    'custom/video_js/video-js', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_link_tag    'custom/modal', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= stylesheet_link_tag    'custom/jquery.rateyo.min', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag    'custom/image_picker/image-picker.min.css', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <!--
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/image-picker/0.3.0/image-picker.min.css" />
+	-->
 <% end %>
 
 <% provide(:title, 'First survey') %>
@@ -105,8 +108,10 @@
 <!--body end-->
 
 <% content_for :tail do %>
-	<%= javascript_include_tag 'custom/video_js/video', 'custom/video_control_2-2', 'custom/jquery.rateyo.min' %>
+	<%= javascript_include_tag 'custom/video_js/video', 'custom/video_control_2-2', 'custom/jquery.rateyo.min', 'custom/image_picker/image-picker.min.js' %>
+	<!--
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/image-picker/0.3.0/image-picker.min.js"></script>
+	-->
 	<script>
 		var vid_tag_id="video";
 		var video_link="0";
