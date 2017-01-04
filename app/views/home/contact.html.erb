@@ -10,7 +10,7 @@
 								1차 설문 :
 							</th>
 							<th colspan="2">
-								<%= (@user.currentShot / @lastShot.id.to_f * 100).round(2) %> % 완료
+								<%= (@user.currentShot / (@lastShot.id.to_f + 1) * 100).round(2) %> % 완료
 							</th>
 						<tr>
 						
