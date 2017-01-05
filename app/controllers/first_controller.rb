@@ -151,16 +151,18 @@ class FirstController < ApplicationController
       @endTimeList = Array.new
       @shotList.each do |shot|
         @shotIDList.push shot.ShotID
-        @startTimeList.push(shot.StartFrame / @video.FPS)
-        @endTimeList.push(shot.EndFrame / @video.FPS) 
+        @startTime = shot.StartFrame.split(":")
+        @startTimeList.push ((@startTime[0].to_i * 3600) + (@startTime[1].to_i * 60) + (@startTime[2].to_i))
+        @endTime = shot.EndFrame.split(":")
+        @endTimeList.push ((@endTime[0].to_i * 3600) + (@endTime[1].to_i * 60) + (@endTime[2].to_i))
       end
       
       # 동영상 스테틱 URL 미완.
-      @videoURL = @video.VideoFileName
+      @videoURL = @video.VideoURL.split("/").last
       
       # CID, 동영상 제목
       @CID = @video.CID
-      @title = @video.ProgramNameKor
+      @title = @video.ProgramName
     end
     
     # 1차 설문 form 파라미터들

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161222052805) do
+ActiveRecord::Schema.define(version: 20170105043651) do
 
   create_table "clists", primary_key: "CID", id: :integer, default: 0, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "Category"
@@ -117,8 +117,8 @@ ActiveRecord::Schema.define(version: 20161222052805) do
   create_table "shot_infos", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "ShotID"
     t.integer "ShotNum"
-    t.integer "StartFrame"
-    t.integer "EndFrame"
+    t.string  "StartFrame"
+    t.string  "EndFrame"
     t.string  "ThumbURL"
     t.integer "CID"
     t.index ["CID"], name: "fk_CID_from_clist", using: :btree
