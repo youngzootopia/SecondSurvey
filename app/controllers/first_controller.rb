@@ -139,30 +139,34 @@ class FirstController < ApplicationController
         @shot = get_shot
       end
       
-      # video 가져오기
-      @video = Clist.find(@shot.CID)
-      
-      # shot List 가져오기
-      @shotList = ShotInfo.where("CID = #{@video.CID} AND id >= #{@user.currentShot}")
-      
-      # 그룹별로 해당 샷이 다르기 때문에 설문 대상 샷 번호, 시작시간, 끝시간 리스트를 만들어 줌
-      @shotIDList = Array.new
-      @startTimeList = Array.new
-      @endTimeList = Array.new
-      @shotList.each do |shot|
-        @shotIDList.push shot.ShotID
-        @startTime = shot.StartFrame.split(":")
-        @startTimeList.push ((@startTime[0].to_i * 3600) + (@startTime[1].to_i * 60) + (@startTime[2].to_i))
-        @endTime = shot.EndFrame.split(":")
-        @endTimeList.push ((@endTime[0].to_i * 3600) + (@endTime[1].to_i * 60) + (@endTime[2].to_i))
+      if @user.save
+        # video 가져오기
+        @video = Clist.find(@shot.CID)
+              
+        # shot List 가져오기
+        @shotList = ShotInfo.where("CID = #{@video.CID} AND id >= #{@user.currentShot}")
+             
+        # 그룹별로 해당 샷이 다르기 때문에 설문 대상 샷 번호, 시작시간, 끝시간 리스트를 만들어 줌
+        @shotIDList = Array.new
+        @startTimeList = Array.new
+        @endTimeList = Array.new
+        @shotList.each do |shot|
+          @shotIDList.push shot.ShotID
+          @startTime = shot.StartFrame.split(":")
+          @startTimeList.push ((@startTime[0].to_i * 3600) + (@startTime[1].to_i * 60) + (@startTime[2].to_i))
+          @endTime = shot.EndFrame.split(":")
+          @endTimeList.push ((@endTime[0].to_i * 3600) + (@endTime[1].to_i * 60) + (@endTime[2].to_i))
+        end
+              
+        # 동영상 스테틱 URL 미완.
+        @videoURL = @video.VideoURL.split("/").last
+           
+        # CID, 동영상 제목
+        @CID = @video.CID
+        @title = @video.ProgramName
+      else
+        render 'get_page'
       end
-      
-      # 동영상 스테틱 URL 미완.
-      @videoURL = @video.VideoURL.split("/").last
-      
-      # CID, 동영상 제목
-      @CID = @video.CID
-      @title = @video.ProgramName
     end
     
     # 1차 설문 form 파라미터들
