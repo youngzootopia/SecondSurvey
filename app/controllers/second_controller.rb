@@ -199,7 +199,8 @@ class SecondController < ApplicationController
       # "type" => "json" 제거
       @query.delete("type")
       # value가 ""(공백)인 값 제거
-      @firstQuery.query = @query.reject { |key, value| value.empty? }
+      @query = @query.reject { |key, value| value.empty? }
+      @firstQuery.query = @query 
         
       if @firstQuery.save # 데이터베이스에 잘 저장 되었다면
         # response 만들기

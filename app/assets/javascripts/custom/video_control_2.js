@@ -95,7 +95,7 @@ function Class_Modal(vid){
 
 	function is_touch_device() {
 	  return 'ontouchstart' in window        // works on most browsers 
-		  || navigator.maxTouchPoints;       // works on IE10/11 and Surface
+		  || navigator.maxTouchPoints || true;       // works on IE10/11 and Surface
 	};
 
 	//call once
