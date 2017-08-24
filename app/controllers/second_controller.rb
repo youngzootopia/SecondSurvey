@@ -47,12 +47,7 @@ class SecondController < ApplicationController
         @firstQuerySurvey.isSelect = @survey["isSelect"]
             
         if @firstQuerySurvey.save # 데이터베이스에 잘 저장 되었다면
-          @user.querys += 1 # query  1 증가
-          if @user.save # 데이터베이스에 잘 저장 되었다면
-            next
-          else
-            render 'get_page'                
-          end
+          next
         else
           render 'get_page'
         end              
@@ -95,15 +90,20 @@ class SecondController < ApplicationController
         @secondQuerySurvey.isSelect = @survey["isSelect"]
         
         if @secondQuerySurvey.save # 데이터베이스에 잘 저장 되었다면
-          @user.querys += 1 # query  1 증가
-          if @user.save # 데이터베이스에 잘 저장 되었다면
-            next
-          else
-            render 'get_page'                
-          end
+          next
         else
           render 'get_page'
         end              
+      end
+      
+      @user.querys += 1 # query  1 증가
+      if @user.save # 데이터베이스에 잘 저장 되었다면
+        @max = MaxQuery.find(1)
+        if @user.querys >= @max.max
+          redirect_to "/contact"
+        end
+      else
+        render 'get_page'                
       end
     else
       redirect_to "/login"
@@ -187,7 +187,6 @@ class SecondController < ApplicationController
       end
     end
   end
-
   
   private
     # 1차 쿼리
@@ -206,19 +205,38 @@ class SecondController < ApplicationController
         # response 만들기
         get_query_data
         
-        @queryIDList = Array.new
-        @queryIDList.push @firstQuery.queryID
-        @queryIDList.push @firstQuery.queryID
-        
-        # for문 돌려야 함.
-        @firstQueryTag = FirstQueryTag.new
-        @firstQueryTag.queryID = @firstQuery.queryID
-        # 쿼리 받으면 수정 필요
-        @firstQueryTag.shotID = 1362
-        @firstQueryTag.tagDesc = "고양이"
-        @firstQueryTag.tagID = 2
-        @firstQueryTag.tagScore = 2
-        unless @firstQueryTag.save # 데이터베이스에 저장 실패할 경우 다시 1차 쿼리 페이지
+        begin
+          @data = JSON.parse @data
+          @data.each do |shot|
+            @shotInfo = ShotInfo.where("ShotID = #{shot['ShotID'].to_i}")[0]
+            if @shotInfo
+              @video = Clist.find(@shotInfo.CID)
+              @shotIDList.push shot['ShotID'].to_i
+              @startTime = @shotInfo.StartFrame.split(":")
+              @startTimeList.push ((@startTime[0].to_i * 3600) + (@startTime[1].to_i * 60) + (@startTime[2].to_i))
+              @endTime = @shotInfo.EndFrame.split(":")
+              @endTimeList.push ((@endTime[0].to_i * 3600) + (@endTime[1].to_i * 60) + (@endTime[2].to_i))
+              @videoURLList.push @video.VideoURL.split("/").last
+              @thumbList.push @shotInfo.ThumbURL
+              @totalScoreList.push shot['TotalScore']
+              @queryIDList.push @firstQuery.queryID
+              
+              # query Tag 저장
+              shot['TagList'].each do |firstQueryTag|
+                @firstQueryTag = FirstQueryTag.new
+                @firstQueryTag.queryID = @firstQuery.queryID
+                # 쿼리 받으면 수정 필요
+                @firstQueryTag.shotID = shot['ShotID'].to_i
+                @firstQueryTag.tagDesc = firstQueryTag['TagDesc']
+                @firstQueryTag.tagID = firstQueryTag['TagID']
+                @firstQueryTag.tagScore = firstQueryTag['TagSCore']
+                unless @firstQueryTag.save # 데이터베이스에 저장 실패할 경우 다시 1차 쿼리 페이지
+                  render 'get_page'
+                end
+              end
+            end
+          end
+        rescue JSON::ParserError => e
           render 'get_page'
         end
       else # 데이터베이스에 저장 실패할 경우 다시 1차 쿼리 페이지
@@ -227,29 +245,52 @@ class SecondController < ApplicationController
     end
     
     # 2차 쿼리
-    def second
+    def second    
       # Second_Queries 데이터 추가
       @secondQuery = SecondQuery.new
       @secondQuery.sUserID = session[:user_id]
-      request.GET.delete :type
-      @secondQuery.query = request.GET
+      @query = JSON.parse request.GET[:data]
+      # "type" => "json" 제거
+      @query.delete("type")
+      # value가 ""(공백)인 값 제거
+      @query = @query.reject { |key, value| value.empty? }
+      @secondQuery.query = @query
       if @secondQuery.save # 데이터베이스에 잘 저장 되었다면
         # response 만들기
         get_query_data
         
-        @queryIDList = Array.new
-        @queryIDList.push @secondQuery.queryID
-        @queryIDList.push @secondQuery.queryID
-        
-        # for문 돌려야 함.
-        @secondQueryTag = SecondQueryTag.new
-        @secondQueryTag.queryID = @secondQuery.queryID
-        # 쿼리 받으면 수정 필요
-        @secondQueryTag.shotID = 1362
-        @secondQueryTag.tagDesc = "고양이"
-        @secondQueryTag.tagID = 2
-        @secondQueryTag.tagScore = 2
-        unless @secondQueryTag.save # 데이터베이스에 저장 실패할 경우 다시 1차 쿼리 페이지
+        begin
+          @data = JSON.parse @data
+          @data.each do |shot|
+            @shotInfo = ShotInfo.where("ShotID = #{shot['ShotID'].to_i}")[0]
+            if @shotInfo
+              @video = Clist.find(@shotInfo.CID)
+              @shotIDList.push shot['ShotID'].to_i
+              @startTime = @shotInfo.StartFrame.split(":")
+              @startTimeList.push ((@startTime[0].to_i * 3600) + (@startTime[1].to_i * 60) + (@startTime[2].to_i))
+              @endTime = @shotInfo.EndFrame.split(":")
+              @endTimeList.push ((@endTime[0].to_i * 3600) + (@endTime[1].to_i * 60) + (@endTime[2].to_i))
+              @videoURLList.push @video.VideoURL.split("/").last
+              @thumbList.push @shotInfo.ThumbURL
+              @totalScoreList.push shot['TotalScore']
+              @queryIDList.push @secondQuery.queryID
+                      
+              # query Tag 저장
+              shot['TagList'].each do |secondQueryTag|
+                @secondQueryTag = SecondQueryTag.new
+                @secondQueryTag.queryID = @secondQuery.queryID
+                # 쿼리 받으면 수정 필요
+                @secondQueryTag.shotID = shot['ShotID'].to_i
+                @secondQueryTag.tagDesc = secondQueryTag['TagDesc']
+                @secondQueryTag.tagID = secondQueryTag['TagID']
+                @secondQueryTag.tagScore = secondQueryTag['TagSCore']
+                unless @secondQueryTag.save # 데이터베이스에 저장 실패할 경우 다시 1차 쿼리 페이지
+                  render 'get_page'
+                end
+              end
+            end
+          end
+        rescue JSON::ParserError => e
           render 'get_page'
         end
       else # 데이터베이스에 저장 실패할 경우 다시 1차 쿼리 페이지
@@ -259,34 +300,29 @@ class SecondController < ApplicationController
     
     # 1, 2차 쿼리 http(다이스트) 통신하기!
     def get_query_data
-      # request.GET 파싱 필요!!
-      #url = URI.parse("http://58.72.188.33:8080/lod/search.do?" + request.GET[:data] + "&type=json")
-      #req = Net::HTTP::Get.new(url.to_s)
-      #@res = Net::HTTP.start(url.host, url.port) {|http|
-      #  http.request(req)
-      #}
+      # 다이퀘스트에 쿼리 보내기
+      @queryStr = ""
+      @query.each {|key, value| @queryStr += URI.encode("#{key.downcase}=#{value}&")}
+      url = URI.parse("http://58.72.188.33:8080/pm/search.do?" + @queryStr + "currentpage=1&pagesize=10")
+      req = Net::HTTP::Get.new(url.to_s)
+      @res = Net::HTTP.start(url.host, url.port) {|http|
+        http.request(req)
+      }
       
-      # response!!! 파싱 필요!!!
-      # puts res.body
-      # 임시 데이터
+      # response 파싱
+      @data = @res.body.force_encoding("utf-8").gsub("\n", '')
+      @data = @data.gsub("\t", '')
+      @data = @data.gsub('\\', '')
+      @data = @data.gsub('\"', '"')
+      @data = "[" + @data[@data.index('{'), @data.size + 1]
+        
       @shotIDList = Array.new
-      @shotIDList.push 1362 # 70 30
-      @shotIDList.push 1378 # 77 24
       @startTimeList = Array.new
-      @startTimeList.push 4.7
-      @startTimeList.push 17.833333
       @endTimeList = Array.new
-      @endTimeList.push 7.4666666
-      @endTimeList.push 18.79166666
       @videoURLList = Array.new
-      @videoURLList.push "bic_070.mp4"
-      @videoURLList.push "bic_077.mp4"
       @totalScoreList = Array.new
-      @totalScoreList.push 1
-      @totalScoreList.push 3
       @thumbList = Array.new
-      @thumbList.push "projects/Bicycle stunt/bic_077/20160109/674.jpg"
-      @thumbList.push "projects/Bicycle stunt/bic_077/20160109/582.jpg"
+      @queryIDList = Array.new
     end
     
     # 1차 쿼리 설문 form 파라미터들
@@ -298,4 +334,4 @@ class SecondController < ApplicationController
     def second_params
       params.require(:second_query_survey).permit(:queryID, :shotID, :correct, :similarity, :preference, :reason, :isSelect)
     end
-end
+  end

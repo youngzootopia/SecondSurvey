@@ -33,3 +33,7 @@
     <% end %>
   </tbody>
 </table>
+
+<% content_for :tail do %>
+  <%= javascript_include_tag    'application' %>
+<% end %>
