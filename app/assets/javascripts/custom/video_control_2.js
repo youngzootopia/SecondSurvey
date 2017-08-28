@@ -95,7 +95,7 @@ function Class_Modal(vid){
 
 	function is_touch_device() {
 	  return 'ontouchstart' in window        // works on most browsers 
-		  || navigator.maxTouchPoints || true;       // works on IE10/11 and Surface
+		  || navigator.maxTouchPoints;       // works on IE10/11 and Surface
 	};
 
 	//call once
@@ -259,7 +259,7 @@ function Class_SurveyForm(){
 			
 			if(data[0].isLast==true){
 				//last shot
-				location.replace("http://211.253.24.242/contact")
+				location.replace("http://211.253.24.242/contact");
 				return;
 			}
 			
@@ -440,7 +440,7 @@ function Class_SurveyForm(){
 				survey.fileName=filename;
 				survey.shotID=shot_id_list[count];
 				survey.reason=myModal.get_reason();
-				myModal.set_reason('');
+				//myModal.set_reason('');
 				survey.preference= myModal.get_rating();
 				//survey.time=end_list[count];
 				

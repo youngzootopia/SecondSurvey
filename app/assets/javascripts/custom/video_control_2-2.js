@@ -149,6 +149,26 @@ function Class_Modal(vid){
 		a.setAttribute("class", 'image-picker show-html img_select');
 		modal_body.append(a);
 		var i=0;
+		///// 가장 높은 부합도를 지닌 사진들만 출력
+		console.log(surv);
+		var max_value=0;
+		for(i=0;i<thumbList.length;i++){
+			if(max_value<surv[i].correct){
+				max_value=surv[i].correct;
+			}
+		}
+		for(i=0;i<thumbList.length;i++){
+			if(surv[i].correct>=max_value){
+				var e = document.createElement("OPTION");
+				e.setAttribute("data-img-src", thumbList[i]);
+				e.setAttribute("value", i);
+				e.setAttribute("name", thumbList[i]);
+				a.appendChild(e);
+			}
+		}
+		max_value=0;//reset
+		/////
+		/*
 		for(i=0;i<thumbList.length;i++){
 			var e = document.createElement("OPTION");
 			e.setAttribute("data-img-src", thumbList[i]);
@@ -156,6 +176,8 @@ function Class_Modal(vid){
 			e.setAttribute("name", thumbList[i]);
 			a.appendChild(e);
 		}
+		*/
+		
 		//$("select").imagepicker();
 		$('.image-picker,.show-html').imagepicker({
 
@@ -418,6 +440,7 @@ function Class_SurveyForm(){
 		console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 					
 		alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		location.replace("http://211.253.24.242/second");
 	};
 
 	
@@ -451,7 +474,8 @@ function Class_SurveyForm(){
 				
 				if(i>=survey_count){
 					
-					if(stage=='5w1h_2'){survey_count++;}
+					//if(stage=='5w1h_2'){survey_count++;}
+					if(stage=='5w1h_2'){survey_count=2;}
 					
 					if(survey_count>=6){
 						survey_count=2;
